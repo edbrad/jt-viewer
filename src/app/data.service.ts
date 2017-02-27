@@ -5,4 +5,24 @@ export class DataService {
 
   constructor() { }
 
+  getJobs(){
+
+  }
+
+  getJobDetails(){
+
+  }
+
+  getPatterns(){
+
+  }
+
+  getPatternDetails(){
+
+  }
+
+  getClients(){
+
+  }
+
 }
