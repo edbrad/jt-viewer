@@ -9,13 +9,15 @@ import { PatternsComponent } from './patterns/patterns.component';
 import { DataService } from './data.service';
 import { routing } from './app.routing';
 import { ClientsComponent } from './clients/clients.component';
+import { HeaderComponent } from './header.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     JobsComponent,
     PatternsComponent,
-    ClientsComponent
+    ClientsComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
