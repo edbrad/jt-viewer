@@ -10,6 +10,8 @@ import { DataService } from './data.service';
 import { routing } from './app.routing';
 import { ClientsComponent } from './clients/clients.component';
 import { HeaderComponent } from './header.component';
+import { JobDetailsComponent } from './job-details/job-details.component';
+import { PatternDetailsComponent } from './pattern-details/pattern-details.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +19,9 @@ import { HeaderComponent } from './header.component';
     JobsComponent,
     PatternsComponent,
     ClientsComponent,
-    HeaderComponent
+    HeaderComponent,
+    JobDetailsComponent,
+    PatternDetailsComponent
   ],
   imports: [
     BrowserModule,
