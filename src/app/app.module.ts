@@ -12,6 +12,7 @@ import { ClientsComponent } from './clients/clients.component';
 import { HeaderComponent } from './header.component';
 import { JobDetailsComponent } from './job-details/job-details.component';
 import { PatternDetailsComponent } from './pattern-details/pattern-details.component';
+import { FooterComponent } from './footer.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { PatternDetailsComponent } from './pattern-details/pattern-details.compo
     ClientsComponent,
     HeaderComponent,
     JobDetailsComponent,
-    PatternDetailsComponent
+    PatternDetailsComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
