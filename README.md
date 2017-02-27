@@ -1,4 +1,9 @@
-# JtViewer
+# JT-Viewer
+
+## Demo - Angular 2 EMS Job Ticket Viewer Application
+This application connects to the Demo pyACCESS Job Ticket Explorer API (http://jte.emsmail.com/api) to search for and display live
+information from the legacy Job Ticket database file (.mdb)
+
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.0-beta.32.3.
 
