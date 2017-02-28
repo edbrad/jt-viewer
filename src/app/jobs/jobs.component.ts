@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Response } from '@angular/http';
+
+import { DataService } from '../data.service';
 
 @Component({
   selector: 'app-jobs',
@@ -7,9 +10,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class JobsComponent implements OnInit {
 
-  constructor() { }
+  constructor(private ds: DataService) { }
 
   ngOnInit() {
+
   }
 
 }
