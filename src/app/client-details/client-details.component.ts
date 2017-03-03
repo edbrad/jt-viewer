@@ -44,7 +44,6 @@ export class ClientDetailsComponent implements OnInit, OnDestroy {
       phone = phone.trim();
       var results = phoneTest.exec(phone);
       if (results !== null && results.length > 8) {
-
         return "(" + results[3] + ") " + results[4] + "-" + results[5] + (typeof results[8] !== "undefined" ? " x" + results[8] : "");
       }
       else {
@@ -55,6 +54,7 @@ export class ClientDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
+  // reformat zip code data into US Zip Code format/style
   formatUsZipCode(zip) {
     if (!zip) {
       return zip;

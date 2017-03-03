@@ -12,7 +12,7 @@ import { DataService } from '../data.service';
 export class ClientsComponent implements OnInit {
 
   clients: any[] = [];
-  distinctClients: any[] = [];
+  distinctClients: any[] = []; // clients to be displayed (db has duplicates)
 
   constructor(private ds: DataService) { }
 
@@ -39,7 +39,6 @@ export class ClientsComponent implements OnInit {
       phone = phone.trim();
       var results = phoneTest.exec(phone);
       if (results !== null && results.length > 8) {
-
         return "(" + results[3] + ") " + results[4] + "-" + results[5] + (typeof results[8] !== "undefined" ? " x" + results[8] : "");
       }
       else {
@@ -50,6 +49,7 @@ export class ClientsComponent implements OnInit {
     }
   }
 
+  // reformat zip code data into US Zip Code format/style
   formatUsZipCode(zip) {
     if (!zip) {
       return zip;
