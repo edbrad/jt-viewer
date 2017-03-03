@@ -8,13 +8,13 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">JT-Viewer</a>
+      <a class="navbar-brand" [routerLink]="['/']"> JT-Viewer</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li routerLinkActive="active"><a [routerLink]="['/jobs']">Jobs <span class="sr-only">(current)</span></a></li>
+        <!--<li routerLinkActive="active"><a [routerLink]="['/jobs']">Jobs <span class="sr-only">(current)</span></a></li>-->
         <li routerLinkActive="active"><a [routerLink]="['/clients']">Clients</a></li>
       </ul>
       <form class="navbar-form navbar-left">

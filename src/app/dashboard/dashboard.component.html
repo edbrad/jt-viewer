@@ -1,5 +1,23 @@
-<h1>DASHBOARD</h1>
-<hr>
-<h2>Stats</h2>
-<hr>
-<h2>Today's Jobs</h2>
+<div class="container">
+  <h1>DASHBOARD</h1>
+  <hr>
+  <h2>Stats</h2>
+  <chart [type]="type" [data]="data" [options]="options"></chart>
+  <hr>
+  <h2>Today's Jobs</h2>
+  <table class="table table-condensed jt-width">
+  <tr>
+    <th>Job Number</th>
+    <th>Drop Date Start</th>
+    <th>Drop Date End</th>
+    <th>QTY</th>
+  </tr>
+  <tr>
+    <td>9999-99</td>
+    <td>99/99/9999</td>
+    <td>99/99/9999</td>
+    <td>9,999,999</td>
+  </tr>
+</table>
+</div>
+

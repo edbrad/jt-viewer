@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AgmCoreModule } from 'angular2-google-maps/core';
+import { ChartModule } from 'angular2-chartjs';
 
 import { AppComponent } from './app.component';
 import { JobsComponent } from './jobs/jobs.component';
@@ -18,6 +19,7 @@ import { PatternDetailsComponent } from './pattern-details/pattern-details.compo
 import { FooterComponent } from './footer.component';
 import { ClientDetailsComponent } from './client-details/client-details.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+
 
 @NgModule({
   declarations: [
@@ -39,7 +41,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     routing,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyA-Kw90at5wMcQIom0j2vDZUptQO3cplkU'
-    })
+    }),
+    ChartModule
   ],
   providers: [DataService, GeocodeService],
   bootstrap: [AppComponent]
