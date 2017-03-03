@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
+import { AgmCoreModule } from 'angular2-google-maps/core';
+
 import { AppComponent } from './app.component';
 import { JobsComponent } from './jobs/jobs.component';
 import { PatternsComponent } from './patterns/patterns.component';
@@ -31,7 +33,10 @@ import { ClientDetailsComponent } from './client-details/client-details.componen
     BrowserModule,
     FormsModule,
     HttpModule,
-    routing
+    routing,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyA-Kw90at5wMcQIom0j2vDZUptQO3cplkU'
+    })
   ],
   providers: [DataService],
   bootstrap: [AppComponent]

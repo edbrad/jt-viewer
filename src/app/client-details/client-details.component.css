@@ -1,6 +1,13 @@
 .jt-bigger-font{
   font-size: 1.5em;
 }
-.jt-half-width{
-  width: 50%;
+.jt-width{
+  width: 80%;
+}
+.jt-google-map{
+  width: 65%;
+  padding: 2px;
+}
+.sebm-google-map-container {
+  height: 350px;
 }

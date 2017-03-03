@@ -1,24 +1,34 @@
-<h1>{{client}}</h1>
-<div class="text-muted">
-  <address *ngIf="clientDetail.Add2 == null" class="jt-bigger-font">
-  {{clientDetail.Add1}}<br>
-  {{clientDetail.City}}, {{clientDetail.state}} {{formatUsZipCode(clientDetail.zip)}}<br>
-  </address>
-  <address *ngIf="clientDetail.Add2 != null" class="jt-bigger-font">
-  {{clientDetail.Add1}}<br>
-  {{clientDetail.Add2}}<br>
-  {{clientDetail.City}}, {{clientDetail.state}} {{formatUsZipCode(clientDetail.zip)}}<br>
-  </address>
+<div class="container">
+  <div class="col-lg-4 col-xs-12">
+    <h1>{{client}}</h1>
+    <div class="text-muted">
+      <address *ngIf="clientDetail.Add2 == null" class="jt-bigger-font">
+        {{clientDetail.Add1}}<br> {{clientDetail.City}}, {{clientDetail.state}} {{formatUsZipCode(clientDetail.zip)}}<br>
+      </address>
+      <address *ngIf="clientDetail.Add2 != null" class="jt-bigger-font">
+        {{clientDetail.Add1}}<br> {{clientDetail.Add2}}
+        <br> {{clientDetail.City}}, {{clientDetail.state}} {{formatUsZipCode(clientDetail.zip)}}<br>
+      </address>
+    </div>
+    <div>
+      <h4>Contacts</h4>
+      <table class="table table-condensed jt-width">
+        <tr>
+          <th>Name</th>
+          <th>Phone Number</th>
+        </tr>
+        <tr *ngFor="let contact of contacts">
+          <td>{{contact.Contact}}</td>
+          <td>{{formatUsPhone(contact.phone)}}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="jt-google-map col-lg-8 col-xs-12">
+    <sebm-google-map [latitude]="lat" [longitude]="lng">
+      <sebm-google-map-marker [latitude]="lat" [longitude]="lng"></sebm-google-map-marker>
+    </sebm-google-map>
+  </div>
 </div>
 <hr>
-<h3>Contacts</h3>
-<table class="table table-condensed jt-half-width">
-  <tr>
-    <th>Name</th>
-    <th>Phone Number</th>
-  </tr>
-  <tr *ngFor="let contact of contacts">
-    <td>{{contact.Contact}}:</td>
-    <td>{{formatUsPhone(contact.phone)}}</td>
-  </tr>
-</table>
+
