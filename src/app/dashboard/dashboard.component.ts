@@ -12,7 +12,7 @@ export class DashboardComponent implements OnInit {
     labels: ["January", "February", "March", "April", "May", "June", "July"],
     datasets: [
       {
-        label: "Mail Volume",
+        label: "Mail Volume for Last 6 Months",
         data: [65, 59, 80, 81, 56, 55, 40]
       }
     ]
