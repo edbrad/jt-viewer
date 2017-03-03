@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 import { JobsComponent } from './jobs/jobs.component';
 import { PatternsComponent } from './patterns/patterns.component';
 import { DataService } from './data.service';
+import { GeocodeService } from './geocode.service';
 import { routing } from './app.routing';
 import { ClientsComponent } from './clients/clients.component';
 import { HeaderComponent } from './header.component';
@@ -38,7 +39,7 @@ import { ClientDetailsComponent } from './client-details/client-details.componen
       apiKey: 'AIzaSyA-Kw90at5wMcQIom0j2vDZUptQO3cplkU'
     })
   ],
-  providers: [DataService],
+  providers: [DataService, GeocodeService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

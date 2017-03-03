@@ -1,7 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
+import { Client } from './client';
 import { DataService } from '../data.service';
+import { GeocodeService } from '../geocode.service';
 
 @Component({
   selector: 'app-client-details',
@@ -10,16 +12,30 @@ import { DataService } from '../data.service';
 })
 export class ClientDetailsComponent implements OnInit, OnDestroy {
 
-  client: string = null;
-  clientDetail: {} = {};
-  clients: any[] = [];
-  contacts: any[] = [];
   private subscription: any;
 
-  lat: number = 51.678418;
-  lng: number = 7.809007;
+  client: string = null;
+  clientDetail: Client = {
+    Comp: '',
+    Contact: '',
+    Add1: '',
+    Add2: '',
+    City: '',
+    state: '',
+    zip: '',
+    phone: ''
+  };
+  clients: any[] = [];
+  contacts: any[] = [];
 
-  constructor(private route: ActivatedRoute, private ds: DataService) { }
+  address: string = '';
+  geocodeData: {} = {};
+  geocodeStatus: string;
+  lat: number = 41.6867322;
+  lng: number = -87.81182009999999;
+  mapZoom: number = 12;
+
+  constructor(private route: ActivatedRoute, private ds: DataService, private gc: GeocodeService) { }
 
   ngOnInit() {
     this.subscription = this.route.params.subscribe(params => {this.client = params['client']});
@@ -34,6 +50,32 @@ export class ClientDetailsComponent implements OnInit, OnDestroy {
           this.contacts.push(this.clients[i]);
         }
       }
+      // get Geocode coordinate data from address for map rendering
+      if(this.clientDetail.Add2 == null){
+        this.address = this.clientDetail.Add1 + ' '
+                      + this.clientDetail.City + ' '
+                      + this.clientDetail.state + ' '
+                      + this.clientDetail.zip;
+      } else{
+        this.address = this.clientDetail.Add1 + ' '
+                      + this.clientDetail.Add2 + ' '
+                      + this.clientDetail.City + ' '
+                      + this.clientDetail.state + ' '
+                      + this.clientDetail.zip;
+      }
+      //console.log("address: " + this.address);
+      this.gc.getGeoCode(this.address).subscribe((data => {
+        this.geocodeData = data;
+        this.geocodeStatus = data.status;
+        //console.log("geocode: " + JSON.stringify(this.geocodeData));
+        //console.log("status: " + this.geocodeStatus);
+        if(this.geocodeStatus == 'OK'){
+          //console.log("lat: " + data.results[0].geometry.location.lat);
+          //console.log("lng: " + data.results[0].geometry.location.lng);
+          this.lat = data.results[0].geometry.location.lat;
+          this.lng = data.results[0].geometry.location.lng;
+        }
+      }));
     }));
   }
 
