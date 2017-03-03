@@ -1,3 +1,24 @@
-<p>
-  client-details works!
-</p>
+<h1>{{client}}</h1>
+<div class="text-muted">
+  <address *ngIf="clientDetail.Add2 == null" class="jt-bigger-font">
+  {{clientDetail.Add1}}<br>
+  {{clientDetail.City}}, {{clientDetail.state}} {{formatUsZipCode(clientDetail.zip)}}<br>
+  </address>
+  <address *ngIf="clientDetail.Add2 != null" class="jt-bigger-font">
+  {{clientDetail.Add1}}<br>
+  {{clientDetail.Add2}}<br>
+  {{clientDetail.City}}, {{clientDetail.state}} {{formatUsZipCode(clientDetail.zip)}}<br>
+  </address>
+</div>
+<hr>
+<h3>Contacts</h3>
+<table class="table table-condensed jt-half-width">
+  <tr>
+    <th>Name</th>
+    <th>Phone Number</th>
+  </tr>
+  <tr *ngFor="let contact of contacts">
+    <td>{{contact.Contact}}:</td>
+    <td>{{formatUsPhone(contact.phone)}}</td>
+  </tr>
+</table>

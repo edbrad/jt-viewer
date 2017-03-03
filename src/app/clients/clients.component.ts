@@ -12,7 +12,7 @@ import { DataService } from '../data.service';
 export class ClientsComponent implements OnInit {
 
   clients: any[] = [];
-  filteredClients: any[] = [];
+  distinctClients: any[] = [];
 
   constructor(private ds: DataService) { }
 
@@ -20,7 +20,7 @@ export class ClientsComponent implements OnInit {
     // get Client data
     this.ds.getClients().subscribe((data => {
       this.clients = data;
-      this.filteredClients = this.removeArrayDuplicates(this.clients, "Comp");
+      this.distinctClients = this.removeArrayDuplicates(this.clients, "Comp");
       //console.log(JSON.stringify("filtered clients: " + this.filteredClients));
     }));
   }
@@ -47,6 +47,19 @@ export class ClientsComponent implements OnInit {
       }
     } else {
       return phone;
+    }
+  }
+
+  formatUsZipCode(zip) {
+    if (!zip) {
+      return zip;
+    }
+    if (zip.toString().length === 9) {
+      return zip.toString().slice(0, 5) + "-" + zip.toString().slice(5);
+    } else if (zip.toString().length === 5) {
+      return zip.toString();
+    } else {
+      return zip;
     }
   }
 }

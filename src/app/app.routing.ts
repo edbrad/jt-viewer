@@ -12,7 +12,7 @@ const APP_ROUTES: Routes = [
     { path: 'jobs', component: JobsComponent},
     { path: 'job-details', component: JobDetailsComponent},
     { path: 'clients', component: ClientsComponent},
-    { path: 'client-details', component: ClientDetailsComponent},
+    { path: 'client-details/:client', component: ClientDetailsComponent},
     { path: 'patterns', component: PatternsComponent},
     { path: 'pattern-details', component: PatternDetailsComponent}
 ];
