@@ -14,7 +14,7 @@ export class ClientDetailsComponent implements OnInit, OnDestroy {
 
   private subscription: any;
 
-  client: string = null;
+  clientName: string = '';
   clientDetail: Client = {
     Comp: '',
     Contact: '',
@@ -38,15 +38,15 @@ export class ClientDetailsComponent implements OnInit, OnDestroy {
   constructor(private route: ActivatedRoute, private ds: DataService, private gc: GeocodeService) { }
 
   ngOnInit() {
-    this.subscription = this.route.params.subscribe(params => {this.client = params['client']});
+    this.subscription = this.route.params.subscribe(params => {this.clientName = params['client']});
 
     // get Client data
     this.ds.getClients().subscribe((data => {
       this.clients = data;
-      this.clientDetail = this.clients.find(client => client.Comp === this.client);
+      this.clientDetail = this.clients.find(client => client.Comp === this.clientName);
       //console.log("client: " + JSON.stringify(this.clientDetail));
       for (var i = 0; i < this.clients.length ; i++){
-        if (this.clients[i].Comp === this.client){
+        if (this.clients[i].Comp === this.clientName){
           this.contacts.push(this.clients[i]);
         }
       }
@@ -64,7 +64,7 @@ export class ClientDetailsComponent implements OnInit, OnDestroy {
                       + this.clientDetail.zip;
       }
       //console.log("address: " + this.address);
-      this.gc.getGeoCode(this.address).subscribe((data => {
+      this.gc.getGeoData(this.address).subscribe((data => {
         this.geocodeData = data;
         this.geocodeStatus = data.status;
         //console.log("geocode: " + JSON.stringify(this.geocodeData));

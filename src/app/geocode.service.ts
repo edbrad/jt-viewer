@@ -8,7 +8,7 @@ export class GeocodeService {
 
   constructor(private http: Http) { }
 
-  getGeoCode(address: string){
+  getGeoData(address: string){
     const apiKey = 'AIzaSyA-Kw90at5wMcQIom0j2vDZUptQO3cplkU';
     const url = 'https://maps.google.com/maps/api/geocode/json?address='
                 + address

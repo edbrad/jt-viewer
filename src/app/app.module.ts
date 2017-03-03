@@ -17,6 +17,7 @@ import { JobDetailsComponent } from './job-details/job-details.component';
 import { PatternDetailsComponent } from './pattern-details/pattern-details.component';
 import { FooterComponent } from './footer.component';
 import { ClientDetailsComponent } from './client-details/client-details.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { ClientDetailsComponent } from './client-details/client-details.componen
     JobDetailsComponent,
     PatternDetailsComponent,
     FooterComponent,
-    ClientDetailsComponent
+    ClientDetailsComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,

@@ -1,5 +1,6 @@
 import { Routes, RouterModule } from '@angular/router';
 
+import { DashboardComponent } from './dashboard/dashboard.component';
 import { JobsComponent } from './jobs/jobs.component';
 import { JobDetailsComponent } from './job-details/job-details.component';
 import { ClientsComponent } from './clients/clients.component';
@@ -8,7 +9,8 @@ import { PatternsComponent } from './patterns/patterns.component';
 import { PatternDetailsComponent } from './pattern-details/pattern-details.component';
 
 const APP_ROUTES: Routes = [
-    { path: '', redirectTo: '/jobs', pathMatch: 'full'},
+    { path: '', redirectTo: '/dashboard', pathMatch: 'full'},
+    { path: 'dashboard', component: DashboardComponent},
     { path: 'jobs', component: JobsComponent},
     { path: 'job-details', component: JobDetailsComponent},
     { path: 'clients', component: ClientsComponent},
