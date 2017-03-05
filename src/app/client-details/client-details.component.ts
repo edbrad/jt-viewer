@@ -12,10 +12,10 @@ import { GeocodeService } from '../geocode.service';
 })
 export class ClientDetailsComponent implements OnInit, OnDestroy {
 
-  private subscription: any;
+  private subscription: any;    /** the Observable subscription to the routing Service */
 
-  clientName: string = '';
-  clientDetail: Client = {
+  clientName: string = '';      /** the selected Client name from list */
+  clientDetail: Client = {      /** the selected Client details */
     Comp: '',
     Contact: '',
     Add1: '',
@@ -25,32 +25,52 @@ export class ClientDetailsComponent implements OnInit, OnDestroy {
     zip: '',
     phone: ''
   };
-  clients: any[] = [];
-  contacts: any[] = [];
+  clients: any[] = [];          /** the entire list of clients */
+  contacts: any[] = [];         /** all the Contacts for the given Client */
+  clientJobs: any[] = [];       /** the jobs for the given Client */
 
-  address: string = '';
-  geocodeData: {} = {};
-  geocodeStatus: string;
+  address: string = '';         /** the address of the given Client */
+  geocodeData: {} = {};         /** the returned Geocode data from Geocode Serice */
+  geocodeStatus: string;        /** the returned Google Maps API Status from the Geocode Service */
+
+  /** Google Maps API parameters */
   lat: number = 41.6867322;
   lng: number = -87.81182009999999;
   mapZoom: number = 12;
 
+  /**
+   * @constructor
+   * @description Create a Client Detail Component
+   * @param {ActivatedRoute} route - the injected route - used to get the souce route parameter (client)
+   * @param {DataService} ds - the injected data service - used to get data from the REST API
+   * @param {GeocodeService} gc - the injected Geocoding service - used to get Lat & Lng from given address
+   */
   constructor(private route: ActivatedRoute, private ds: DataService, private gc: GeocodeService) { }
 
+  /**
+   * @method ngOnInit
+   * @description Component initialization
+   */
   ngOnInit() {
+    /** get the given client (name) to be displayed from the incoming route parameters */
     this.subscription = this.route.params.subscribe(params => {this.clientName = params['client']});
 
-    // get Client data
+    /**
+     * get all Client data from the external REST API then filter out the matching Client from
+     * incoming route
+     */
     this.ds.getClients().subscribe((data => {
       this.clients = data;
       this.clientDetail = this.clients.find(client => client.Comp === this.clientName);
-      //console.log("client: " + JSON.stringify(this.clientDetail));
+
+      /** collect all the Contacts for the given Client */
       for (var i = 0; i < this.clients.length ; i++){
         if (this.clients[i].Comp === this.clientName){
           this.contacts.push(this.clients[i]);
         }
       }
-      // get Geocode coordinate data from address for map rendering
+
+      /* get Geocode coordinate data from address for map rendering */
       if(this.clientDetail.Add2 == null){
         this.address = this.clientDetail.Add1 + ' '
                       + this.clientDetail.City + ' '
@@ -63,24 +83,32 @@ export class ClientDetailsComponent implements OnInit, OnDestroy {
                       + this.clientDetail.state + ' '
                       + this.clientDetail.zip;
       }
-      //console.log("address: " + this.address);
       this.gc.getGeoData(this.address).subscribe((data => {
         this.geocodeData = data;
         this.geocodeStatus = data.status;
-        //console.log("geocode: " + JSON.stringify(this.geocodeData));
-        //console.log("status: " + this.geocodeStatus);
         if(this.geocodeStatus == 'OK'){
-          //console.log("lat: " + data.results[0].geometry.location.lat);
-          //console.log("lng: " + data.results[0].geometry.location.lng);
           this.lat = data.results[0].geometry.location.lat;
           this.lng = data.results[0].geometry.location.lng;
         }
       }));
     }));
+
+    /**
+     * get all Jobs for the given Client from the external REST API
+     */
+    this.ds.getJobsForClient(this.clientName).subscribe((data => {
+      this.clientJobs = data;
+      //console.log('Jobs: ' + JSON.stringify(this.clientJobs));
+    }));
   }
 
-  // reformat phone data into US Phone Number format/style
-  formatUsPhone(phone) {
+  /**
+   * @function formatUsPhone
+   * @description Reformat phone data into US Phone Number format/style
+   * @param {String} phone - phone number to be reformatted
+   * @returns {String} the reformatted phone number
+   */
+  private formatUsPhone(phone) {
     var phoneTest = new RegExp(/^((\+1)|1)? ?\(?(\d{3})\)?[ .-]?(\d{3})[ .-]?(\d{4})( ?(ext\.? ?|x)(\d*))?$/);
     if (phone != null) {
       phone = phone.trim();
@@ -96,8 +124,13 @@ export class ClientDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-  // reformat zip code data into US Zip Code format/style
-  formatUsZipCode(zip) {
+  /**
+   * @function formatUsZipCode
+   * @description reformat zip code data into US Zip Code format/style
+   * @param {String} zip - the Zip Code to be reformatted
+   * @returns {String} the reformatted Zip Code
+   */
+  private formatUsZipCode(zip) {
     if (!zip) {
       return zip;
     }
@@ -110,7 +143,16 @@ export class ClientDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
+  private getJobCount(){
+    return this.clientJobs.length;
+  }
+
+  /**
+   * @method ngOnDestroy
+   * @description Component clean-up
+   */
   ngOnDestroy(){
+    /** dispose of subsription to prevent memory leak */
     this.subscription.unsubscribe();
   }
 }

@@ -7,13 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
+  /** ChartJS parameters */
   type = 'line';
   data = {
-    labels: ["January", "February", "March", "April", "May", "June", "July"],
+    labels: ["January", "February", "March", "April", "May", "June"],
     datasets: [
       {
-        label: "Mail Volume for Last 6 Months",
-        data: [65, 59, 80, 81, 56, 55, 40]
+        label: "Mail Drop Volume for Last 6 Months",
+        data: [65, 59, 80, 81, 56, 55]
       }
     ]
   };
@@ -22,8 +23,15 @@ export class DashboardComponent implements OnInit {
     maintainAspectRatio: false
   };
 
+  /**
+   * @constructor
+   */
   constructor() { }
 
+  /**
+   * @method ngOnInit
+   * @description Component initialization
+   */
   ngOnInit() {
   }
 

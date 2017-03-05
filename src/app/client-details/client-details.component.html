@@ -33,19 +33,23 @@
 <hr>
 <div class="container">
 <h3 class="text-muted">Jobs</h3>
+<p class="text-muted">JOBS FOUND: {{getJobCount()}}</p>
 <table class="table table-condensed jt-width">
   <tr>
     <th>Job Number</th>
+    <th>Description</th>
     <th>Drop Date Start</th>
     <th>Drop Date End</th>
     <th>QTY</th>
   </tr>
-  <tr>
-    <td>9999-99</td>
-    <td>99/99/9999</td>
-    <td>99/99/9999</td>
+  <tr *ngFor="let job of clientJobs">
+    <td>{{job.Jobnum}}</td>
+    <td>{{job.JobDescp}}</td>
+    <td>{{job.DropDate}}</td>
+    <td>{{job.ToDropDate}}</td>
     <td>9,999,999</td>
   </tr>
 </table>
 </div>
+<br>
 
