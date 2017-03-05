@@ -70,7 +70,7 @@ export class ClientDetailsComponent implements OnInit, OnDestroy {
         }
       }
 
-      /* get Geocode coordinate data from address for map rendering */
+      /** get Geocode coordinate data from address for map rendering */
       if(this.clientDetail.Add2 == null){
         this.address = this.clientDetail.Add1 + ' '
                       + this.clientDetail.City + ' '
@@ -93,12 +93,9 @@ export class ClientDetailsComponent implements OnInit, OnDestroy {
       }));
     }));
 
-    /**
-     * get all Jobs for the given Client from the external REST API
-     */
+    /** get all Jobs for the given Client from the external REST API */
     this.ds.getJobsForClient(this.clientName).subscribe((data => {
       this.clientJobs = data;
-      //console.log('Jobs: ' + JSON.stringify(this.clientJobs));
     }));
   }
 
@@ -143,6 +140,11 @@ export class ClientDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * @function getJobCount
+   * @description get the number of Jobs found for the given Client
+   * @returns {Number} the number of Jobs found
+   */
   private getJobCount(){
     return this.clientJobs.length;
   }
