@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -7,13 +8,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor() { }
+
+  jobnum: String = '';
+
+  constructor( private router: Router) { }
 
   ngOnInit() {
+
   }
 
   jobSearch(){
-    alert("You Clicked Search");
+    //alert("You Clicked Search");
+    this.router.navigateByUrl('/jobs/' + this.jobnum);
+
   }
 
 }

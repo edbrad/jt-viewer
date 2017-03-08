@@ -3,6 +3,12 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
+//import 'es6-shim';
+//import 'es6-promise';
+//import 'reflect-metadata';
+//import 'zone.js/dist.zone';
+//import 'zone.js/dist/long-stack-trace-zone';
+
 import { AgmCoreModule } from 'angular2-google-maps/core';
 import { ChartModule } from 'angular2-chartjs';
 import { DataTableModule } from 'angular2-datatable';

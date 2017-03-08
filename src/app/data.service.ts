@@ -17,7 +17,11 @@ export class DataService {
       .map((response: Response) => response.json());
   }
 
-  getJobs(){
+  getJobs(jobnum){
+    const url = 'http://172.16.97.216:8000/api/jobnum-search?jobnum=' + jobnum;
+    // create an Observable for the HTTP/REST API call and transform (map) the response to a JSON array
+    return this.http.get(url)
+      .map((response: Response) => response.json());
 
   }
 
