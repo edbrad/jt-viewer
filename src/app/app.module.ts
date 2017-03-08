@@ -5,6 +5,7 @@ import { HttpModule } from '@angular/http';
 
 import { AgmCoreModule } from 'angular2-google-maps/core';
 import { ChartModule } from 'angular2-chartjs';
+import { DataTableModule } from 'angular2-datatable';
 
 import { AppComponent } from './app.component';
 import { JobsComponent } from './jobs/jobs.component';
@@ -42,7 +43,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyA-Kw90at5wMcQIom0j2vDZUptQO3cplkU'
     }),
-    ChartModule
+    ChartModule,
+    DataTableModule
   ],
   providers: [DataService, GeocodeService],
   bootstrap: [AppComponent]

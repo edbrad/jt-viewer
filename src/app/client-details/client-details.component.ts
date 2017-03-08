@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Client } from './client';
 import { DataService } from '../data.service';
 import { GeocodeService } from '../geocode.service';
+import { Observable } from "rxjs/Observable";
 
 @Component({
   selector: 'app-client-details',
@@ -28,12 +29,16 @@ export class ClientDetailsComponent implements OnInit, OnDestroy {
   clients: any[] = [];          /** the entire list of clients */
   contacts: any[] = [];         /** all the Contacts for the given Client */
   clientJobs: any[] = [];       /** the jobs for the given Client */
+  jobPatterns: any[] = [];      /** all of the patterns for the given Client's jobs */
+  wrkPatterns: any[] = [];
+  wrkJobTotal: number;
+  wrkClientTotal: number;
 
   address: string = '';         /** the address of the given Client */
   geocodeData: {} = {};         /** the returned Geocode data from Geocode Serice */
   geocodeStatus: string;        /** the returned Google Maps API Status from the Geocode Service */
 
-  /** Google Maps API parameters */
+  /** Google Maps API parameters - default settings */
   lat: number = 41.6867322;
   lng: number = -87.81182009999999;
   mapZoom: number = 12;
@@ -42,8 +47,8 @@ export class ClientDetailsComponent implements OnInit, OnDestroy {
    * @constructor
    * @description Create a Client Detail Component
    * @param {ActivatedRoute} route - the injected route - used to get the souce route parameter (client)
-   * @param {DataService} ds - the injected data service - used to get data from the REST API
-   * @param {GeocodeService} gc - the injected Geocoding service - used to get Lat & Lng from given address
+   * @param {DataService} ds - the injected data service - used to get data from the REST API (pyACCESS)
+   * @param {GeocodeService} gc - the injected Geocoding service - used to get Lat & Lng for a given address
    */
   constructor(private route: ActivatedRoute, private ds: DataService, private gc: GeocodeService) { }
 
@@ -55,15 +60,15 @@ export class ClientDetailsComponent implements OnInit, OnDestroy {
     /** get the given client (name) to be displayed from the incoming route parameters */
     this.subscription = this.route.params.subscribe(params => {this.clientName = params['client']});
 
-    /**
-     * get all Client data from the external REST API then filter out the matching Client from
-     * incoming route
-     */
+    /** get all Client data from the external REST API then filter out the matching Client from
+     * incoming route */
     this.ds.getClients().subscribe((data => {
       this.clients = data;
+      /** get the first client, for detail display, that matches the given client
+       * (duplicates exist in db for each contact) */
       this.clientDetail = this.clients.find(client => client.Comp === this.clientName);
 
-      /** collect all the Contacts for the given Client */
+      /** collect all the Contacts for the given Client (exist in 1 or more Client entries) */
       for (var i = 0; i < this.clients.length ; i++){
         if (this.clients[i].Comp === this.clientName){
           this.contacts.push(this.clients[i]);
@@ -91,11 +96,11 @@ export class ClientDetailsComponent implements OnInit, OnDestroy {
           this.lng = data.results[0].geometry.location.lng;
         }
       }));
-    }));
 
-    /** get all Jobs for the given Client from the external REST API */
-    this.ds.getJobsForClient(this.clientName).subscribe((data => {
-      this.clientJobs = data;
+      /** get all Jobs for the given Client from the external REST API */
+      this.ds.getJobsForClient(this.clientName).subscribe((data => {
+        this.clientJobs = data;
+      }));
     }));
   }
 
@@ -146,6 +151,7 @@ export class ClientDetailsComponent implements OnInit, OnDestroy {
    * @returns {Number} the number of Jobs found
    */
   private getJobCount(){
+    //this.getTotalQtyForEachJob();
     return this.clientJobs.length;
   }
 

@@ -11,8 +11,8 @@ import { PatternDetailsComponent } from './pattern-details/pattern-details.compo
 const APP_ROUTES: Routes = [
     { path: '', redirectTo: '/dashboard', pathMatch: 'full'},
     { path: 'dashboard', component: DashboardComponent},
-    { path: 'jobs', component: JobsComponent},
-    { path: 'job-details', component: JobDetailsComponent},
+    { path: 'jobs/:jobnum', component: JobsComponent},
+    { path: 'job-details/:jobnum', component: JobDetailsComponent},
     { path: 'clients', component: ClientsComponent},
     { path: 'client-details/:client', component: ClientDetailsComponent},
     { path: 'patterns', component: PatternsComponent},
