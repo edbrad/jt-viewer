@@ -26,6 +26,7 @@ import { PatternDetailsComponent } from './pattern-details/pattern-details.compo
 import { FooterComponent } from './footer.component';
 import { ClientDetailsComponent } from './client-details/client-details.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { AddCommasPipe } from './add-commas.pipe';
 
 
 @NgModule({
@@ -39,7 +40,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     PatternDetailsComponent,
     FooterComponent,
     ClientDetailsComponent,
-    DashboardComponent
+    DashboardComponent,
+    AddCommasPipe
   ],
   imports: [
     BrowserModule,

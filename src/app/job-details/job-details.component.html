@@ -1,3 +1,30 @@
-<p>
-  JOB DETAILS
-</p>
+<div class="container">
+  <h2>JOB DETAILS</h2>
+  <hr>
+  <table class="table table-bordered table-striped table-condensed">
+    <tr>
+      <td><b>Job Number:</b></td>
+      <td>{{aJob.Jobnum}}</td>
+    </tr>
+    <tr>
+      <td><b>Company:</b></td>
+      <td>{{aJob.Company}}</td>
+    </tr>
+    <tr>
+      <td><b>Contact:</b></td>
+      <td>{{aJob.Contact}}</td>
+    </tr>
+    <tr>
+      <td><b>Date Received:</b></td>
+      <td>{{aJob.DateReceived}}</td>
+    </tr>
+    <tr>
+      <td><b>Description:</b></td>
+      <td>{{aJob.JobDescp}}</td>
+    </tr>
+    <tr>
+      <td><b>Total Pieces:</b></td>
+      <td>{{totalQty | addCommas}}</td>
+    </tr>
+  </table>
+</div>
