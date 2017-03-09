@@ -3,15 +3,10 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
-//import 'es6-shim';
-//import 'es6-promise';
-//import 'reflect-metadata';
-//import 'zone.js/dist.zone';
-//import 'zone.js/dist/long-stack-trace-zone';
-
 import { AgmCoreModule } from 'angular2-google-maps/core';
 import { ChartModule } from 'angular2-chartjs';
 import { DataTableModule } from 'angular2-datatable';
+import { Ng2FilterPipeModule } from 'ng2-filter-pipe';
 
 import { AppComponent } from './app.component';
 import { JobsComponent } from './jobs/jobs.component';
@@ -52,7 +47,8 @@ import { AddCommasPipe } from './add-commas.pipe';
       apiKey: 'AIzaSyA-Kw90at5wMcQIom0j2vDZUptQO3cplkU'
     }),
     ChartModule,
-    DataTableModule
+    DataTableModule,
+    Ng2FilterPipeModule
   ],
   providers: [DataService, GeocodeService],
   bootstrap: [AppComponent]

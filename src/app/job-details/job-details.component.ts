@@ -18,7 +18,6 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
   job: any;
   aJob: {} = {};
   totalQty: number;
-  parts: String;
 
   constructor(private route: ActivatedRoute, private ds: DataService) { }
 
@@ -35,7 +34,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
 
       this.ds.getJobDetails(this.jobNumber).subscribe((data => {
         this.jobPatterns = data;
-        console.log('job patterns: ' + JSON.stringify(this.jobPatterns));
+        //console.log('job patterns: ' + JSON.stringify(this.jobPatterns));
         this.totalQty = 0;
         for (var i = 0; i < this.jobPatterns.length; i++) {
           this.totalQty += parseInt(this.jobPatterns[i].PackShip);

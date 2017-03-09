@@ -13,6 +13,7 @@ export class ClientsComponent implements OnInit {
 
   clients: any[] = [];          /** the entire list of Clients */
   distinctClients: any[] = [];  /** clients to be displayed (db has duplicates) */
+  clientFilter: any = { Comp: '' };
 
   /**
    * @constructor
