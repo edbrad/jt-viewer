@@ -15,6 +15,7 @@ export class JobsComponent implements OnInit {
 
   jobnum: String;
   jobs: any[] = [];
+  jobFilter: any = { JobDescp: '' };
 
   constructor(private ds: DataService, private route: ActivatedRoute) { }
 
