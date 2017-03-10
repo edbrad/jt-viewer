@@ -1,11 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 
+import { ToasterModule, ToasterService, ToasterConfig, Toast } from 'angular2-toaster';
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
+
+  private toasterService: ToasterService;
+  public config1 : ToasterConfig = new ToasterConfig({
+    positionClass: 'toast-top-right'
+  });
 
   /** ChartJS parameters */
   type = 'line';
@@ -26,13 +33,22 @@ export class DashboardComponent implements OnInit {
   /**
    * @constructor
    */
-  constructor() { }
+  constructor(toasterService: ToasterService) {
+    this.toasterService = toasterService;
+   }
 
   /**
    * @method ngOnInit
    * @description Component initialization
    */
   ngOnInit() {
+    var toast: Toast = {
+      type: 'success',
+      title: 'EMS Job Ticket Viewer',
+      body: 'Application Loaded!'
+    };
+
+    this.toasterService.pop(toast);
   }
 
 }

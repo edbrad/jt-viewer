@@ -2,7 +2,16 @@
   <h2>JOB SEARCH RESULTS</h2>
   <hr>
   <div class="container">
-  <p class="text-muted">JOBS FOUND: {{getJobCount()}}</p>
+  <div class="row col-lg-6" >
+  <table class="table table-bordered table-striped table-condensed">
+    <tr>
+      <td width="25%">SEARCH VALUE: </td>
+      <td width="25%">{{jobnum}}</td>
+      <td width="25%">JOBS FOUND: </td>
+      <td width="25%">{{getJobCount()}}</td>
+    </tr>
+  </table>
+  </div>
   <div>
     <input type="text" class="form-control" [(ngModel)]="jobFilter.JobDescp" placeholder="Description Filter">
   </div>

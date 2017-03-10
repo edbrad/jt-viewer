@@ -23,6 +23,7 @@
     "angular2-chartjs": "^0.1.6",
     "angular2-datatable": "^0.5.3",
     "angular2-google-maps": "^0.17.0",
+    "angular2-toaster": "^2.0.0",
     "core-js": "^2.4.1",
     "ng2-filter-pipe": "^0.1.6",
     "rxjs": "^5.1.0",

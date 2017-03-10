@@ -16,6 +16,7 @@ export class JobsComponent implements OnInit {
   jobnum: String;
   jobs: any[] = [];
   jobFilter: any = { JobDescp: '' };
+  spaces: string ='&nbsp;&nbsp';
 
   constructor(private ds: DataService, private route: ActivatedRoute) { }
 
