@@ -1,14 +1,30 @@
 <div class="container">
   <h2>JOB DETAILS</h2>
   <hr>
+</div>
+<div class="container">
+<div>
+  <button style="margin-bottom: 10px; margin-left: 0px;" class="btn btn-success"><i class="fa fa-print"></i> Print Job Ticket</button>
+</div>
+<div class="container row col-lg-9">
   <table class="table table-bordered table-striped table-condensed">
     <tr>
-      <td><b>Job Number:</b></td>
-      <td>{{aJob.Jobnum}}</td>
+      <td class="col-xs-3"><b>Job Number:</b></td>
+      <td class="col-xs-9"><b>{{aJob.Jobnum}}</b></td>
     </tr>
     <tr>
       <td><b>Company:</b></td>
-      <td>{{aJob.Company}}</td>
+      <td *ngIf="aClient.Add2 != null">
+        <b>{{aClient.Comp}}</b><br> {{aClient.Add1}}
+        <br> {{aClient.Add2}}
+        <br> {{aClient.City}}, {{aClient.state}} {{formatUsZipCode(aClient.zip)}}<br> {{formatUsPhone(aClient.phone)}}
+        <br>
+      </td>
+      <td *ngIf="aClient.Add2 == null">
+        <b>{{aClient.Comp}}</b><br> {{aClient.Add1}}
+        <br> {{aClient.City}}, {{aClient.state}} {{formatUsZipCode(aClient.zip)}}<br> {{formatUsPhone(aClient.phone)}}
+        <br>
+      </td>
     </tr>
     <tr>
       <td><b>Contact:</b></td>
@@ -23,8 +39,184 @@
       <td>{{aJob.JobDescp}}</td>
     </tr>
     <tr>
+      <td><b>Special Info.:</b></td>
+      <td>{{aJob.MeterInst}}</td>
+    </tr>
+    <tr>
+      <td><b>Salesperson/CSR Ticket Date:</b></td>
+      <td>{{aJob.Remark}}</td>
+    </tr>
+    <tr>
+      <td><b>Receiving Dept.:</b></td>
+      <td>{{aJob.RDept}}</td>
+    </tr>
+    <tr>
+      <td><b>Starting Drop Date:</b></td>
+      <td><b>{{aJob.DropDate}}</b></td>
+    </tr>
+    <tr *ngIf="aJob.ToDropDate != null">
+      <td><b>Ending Drop Date:</b></td>
+      <td><b>{{aJob.ToDropDate}}</b></td>
+    </tr>
+    <tr>
+      <td><b>Permit Number:</b></td>
+      <td>{{aJob.Permit}}</td>
+    </tr>
+    <tr>
       <td><b>Total Pieces:</b></td>
-      <td>{{totalQty | addCommas}}</td>
+      <td><b>{{totalQty | addCommas}}</b></td>
+    </tr>
+    <tr>
+      <td><b>Samples:</b></td>
+      <td>{{ aJob.Sample1 }}</td>
+    </tr>
+    <tr *ngIf="aJob.Sample2 != null">
+      <td></td>
+      <td>{{aJob.Sample2}}</td>
+    </tr>
+    <tr *ngIf="aJob.Sample3 != null">
+      <td></td>
+      <td>{{aJob.Sample3}}</td>
+    </tr>
+    <tr *ngIf="aJob.Sample4 != null">
+      <td></td>
+      <td>{{aJob.Sample4}}</td>
+    </tr>
+    <tr *ngIf="aJob.Sample5 != null">
+      <td></td>
+      <td>{{aJob.Sample5}}</td>
+    </tr>
+    <tr *ngIf="aJob.Sample6 != null">
+      <td></td>
+      <td>{{aJob.Sample6}}</td>
+    </tr>
+    <tr *ngIf="aJob.Sample7 != null">
+      <td></td>
+      <td>{{aJob.Sample7}}</td>
+    </tr>
+    <tr *ngIf="aJob.Sample8 != null">
+      <td></td>
+      <td>{{aJob.Sample8}}</td>
+    </tr>
+    <tr *ngIf="aJob.Sample9 != null">
+      <td></td>
+      <td>{{aJob.Sample9}}</td>
+    </tr>
+    <tr *ngIf="aJob.Sample10 != null">
+      <td></td>
+      <td>{{aJob.Sample10}}</td>
+    </tr>
+    <tr *ngIf="aJob.Sample11 != null">
+      <td></td>
+      <td>{{aJob.Sample11}}</td>
+    </tr>
+    <tr *ngIf="aJob.Sample12 != null">
+      <td></td>
+      <td>{{aJob.Sample12}}</td>
+    </tr>
+    <tr *ngIf="aJob.Sample13 != null">
+      <td></td>
+      <td>{{aJob.Sample13}}</td>
+    </tr>
+    <tr *ngIf="aJob.Sample14 != null">
+      <td></td>
+      <td>{{aJob.Sample14}}</td>
+    </tr>
+    <tr *ngIf="aJob.Sample15 != null">
+      <td></td>
+      <td>{{aJob.Sample15}}</td>
+    </tr>
+    <tr *ngIf="aJob.Sample16 != null">
+      <td></td>
+      <td>{{aJob.Sample16}}</td>
+    </tr>
+    <tr *ngIf="aJob.Sample17 != null">
+      <td></td>
+      <td>{{aJob.Sample17}}</td>
+    </tr>
+    <tr *ngIf="aJob.Sample18 != null">
+      <td></td>
+      <td>{{aJob.Sample18}}</td>
+    </tr>
+    <tr *ngIf="aJob.Sample19 != null">
+      <td></td>
+      <td>{{aJob.Sample19}}</td>
+    </tr>
+    <tr *ngIf="aJob.Sample20 != null">
+      <td></td>
+      <td>{{aJob.Sample20}}</td>
+    </tr>
+    <tr *ngIf="aJob.Sample21 != null">
+      <td></td>
+      <td>{{aJob.Sample21}}</td>
+    </tr>
+    <tr *ngIf="aJob.Sample22 != null">
+      <td></td>
+      <td>{{aJob.Sample22}}</td>
     </tr>
   </table>
+</div>
+<div class="row col-lg-12">
+  <h2 class="text-muted">Patterns</h2>
+</div>
+<div>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th style="width: 10%">
+          Pattern
+        </th>
+        <th style="width: 60%">
+          Description
+        </th>
+        <th style="width: 15%">
+          Quantity
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let pat of jobPatterns">
+        <td>
+          <a [routerLink]="['/pattern-details', pat.Jobpat]">{{pat.Jobpat | uppercase}}</a>
+        </td>
+        <td>{{pat.DESCP1}}</td>
+        <td>{{getPatQty(pat.Jobpat) | addCommas}}</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="row col-lg-12">
+  <h2 class="text-muted">Departmental Instructions</h2>
+</div>
+<table class="table table-bordered table-striped table-condensed">
+  <tr>
+    <td class="col-xs-3"><b>Excess Stock:</b></td>
+    <td class="col-xs-9">{{aJob.stockInst}}</td>
+  </tr>
+  <tr>
+    <td><b>Computer Room:</b></td>
+    <td>{{aJob.CRInst}}</td>
+  </tr>
+  <tr>
+    <td><b>Inkjet Dept:</b></td>
+    <td>{{aJob.AdDept}}</td>
+  </tr>
+  <tr>
+    <td><b>Bindery Dept:</b></td>
+    <td>{{aJob.BDInst}}</td>
+  </tr>
+  <tr>
+    <td><b>Stamp Dept:</b></td>
+    <td>{{aJob.StampInst}}</td>
+  </tr>
+  <tr>
+    <td><b>Inserting Dept:</b></td>
+    <td>{{aJob.InDInst}}</td>
+  </tr>
+  <tr>
+    <td><b>Postage Statements:</b></td>
+    <td>{{aJob.PO3602Inst}}</td>
+  </tr>
+</table>
+  <br><br>
+</div>
 </div>

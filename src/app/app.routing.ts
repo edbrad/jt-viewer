@@ -16,7 +16,7 @@ const APP_ROUTES: Routes = [
     { path: 'clients', component: ClientsComponent},
     { path: 'client-details/:client', component: ClientDetailsComponent},
     { path: 'patterns', component: PatternsComponent},
-    { path: 'pattern-details', component: PatternDetailsComponent}
+    { path: 'pattern-details/:pattern', component: PatternDetailsComponent}
 ];
 
 export const routing = RouterModule.forRoot(APP_ROUTES);

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Observable } from 'rxjs/Rx';
+import { ToasterModule, ToasterService, ToasterConfig, Toast } from 'angular2-toaster';
 
 import { DataService } from '../data.service';
 
@@ -10,6 +11,11 @@ import { DataService } from '../data.service';
   styleUrls: ['./clients.component.css']
 })
 export class ClientsComponent implements OnInit {
+
+  private toasterService: ToasterService;
+  public config1 : ToasterConfig = new ToasterConfig({
+    positionClass: 'toast-top-right'
+  });
 
   clients: any[] = [];          /** the entire list of Clients */
   distinctClients: any[] = [];  /** clients to be displayed (db has duplicates) */
@@ -21,7 +27,9 @@ export class ClientsComponent implements OnInit {
    * @param {DataService} ds - the injected data service -
    *                           used to fetch data from the external REST API
    */
-  constructor(private ds: DataService) { }
+  constructor(private ds: DataService, toasterService: ToasterService) {
+    this.toasterService = toasterService;
+   }
 
   /**
    * @method ngOnInit
@@ -32,6 +40,14 @@ export class ClientsComponent implements OnInit {
     this.ds.getClients().subscribe((data => {
       this.clients = data;
       this.distinctClients = this.removeArrayDuplicates(this.clients, "Comp");
+
+      var toast: Toast = {
+      type: 'success',
+      title: 'EMS Job Ticket Viewer',
+      body: this.clients.length + ' Clients Loaded from Database!'
+    };
+
+    this.toasterService.pop(toast);
     }));
   }
 
