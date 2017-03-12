@@ -1,3 +1,5 @@
+//pdfmake = require('pdfmake');
+declare var pdfMake: any;
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
@@ -22,9 +24,13 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
   clients: any[] = [];
   aClient: {} = {};
 
+  pdf: any;
+
   constructor(private route: ActivatedRoute, private ds: DataService) { }
 
   ngOnInit() {
+
+
     /** get the given job (number) to be displayed from the incoming route parameters */
     this.subscription = this.route.params.subscribe(params => {this.jobNumber = params['jobnum']});
 
@@ -98,6 +104,25 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
     }
     return patQty;
   }
+
+  private printJobTicket(){
+    //alert("Im working on it!");
+    this.pdf = pdfMake;
+    var item: {jobnum: string} = {jobnum: this.jobNumber};
+    this.pdf.createPdf(this.buildPdf(item)).open();
+  }
+
+  private buildPdf(value) {
+    var pdfContent = value;
+    var docDefinition = {
+      content: [
+        { text: 'Executive Mailing Service - JOB TICKET'},
+        { text: 'EMS Job Number: ' + pdfContent.jobnum}
+      ]
+    }
+    console.log(pdfContent);
+    return docDefinition;
+}
 
   private numberWithCommas(x: number) {
     return x.toLocaleString();
