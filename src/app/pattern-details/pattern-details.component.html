@@ -1,3 +1,359 @@
-<p>
-  PATTERN DETAILS
-</p>
+<div class="container">
+  <h1>PATTERN DETAILS</h1>
+  <hr>
+  <div class="row col-sm-6">
+    <table class="table table-bordered table-condensed">
+      <tr>
+        <td><b>Job Number:</b></td>
+        <td><a [routerLink]="['/job-details', this.jobnum]">{{ jobnum }}</a></td>
+        <td><b>Pattern:</b></td>
+        <td style="color:darkgreen;"><b>{{ pattern | uppercase }}</b></td>
+      </tr>
+      <tr>
+        <td><b>Mail Classs:</b></td>
+        <td>{{ aPattern.MailClass }}</td>
+        <td><b>Payment Method:</b></td>
+        <td>{{ aPattern.Payment }}</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td><b>Total Pieces:</b></td>
+        <td style="color:darkred;"><b>{{totalQty | addCommas}}</b></td>
+      </tr>
+    </table>
+  </div>
+  <!-- Description Lines -->
+  <div class="row col-sm-12">
+    <h3>Description</h3>
+    <table class="table table-condensed">
+      <tr>
+        <td>{{ aPattern.DESCP1 }}</td>
+      </tr>
+      <tr *ngIf="aPattern.DESCP2 != null">
+        <td>{{ aPattern.DESCP2 }}</td>
+      </tr>
+      <tr *ngIf="aPattern.DESCP3 != null">
+        <td>{{ aPattern.DESCP3 }}</td>
+      </tr>
+      <tr *ngIf="aPattern.DESCP4 != null">
+        <td>{{ aPattern.DESCP4 }}</td>
+      </tr>
+      <tr *ngIf="aPattern.DESCP5 != null">
+        <td>{{ aPattern.DESCP5 }}</td>
+      </tr>
+    </table>
+  </div>
+  <!-- Presort Counts -->
+  <div class="row col-sm-8">
+    <h3>Postal Counts</h3>
+    <table class="table table-bordered table-striped table-condensed">
+      <tr>
+        <th class="col-xs-4" style="text-align: center">AUTOMATION</th>
+        <th class="col-xs-2" style="text-align: left">Qty.</th>
+        <th class="col-xs-4" style="text-align: center">NON-AUTOMATION</th>
+        <th class="col-xs-2" style="text-align: left">Qty.</th>
+      </tr>
+      <tr>
+        <td style="text-align: right">5-Digit Auto:</td>
+        <td><b>{{ aPattern.cdig5bar | addCommas }}</b></td>
+        <td style="text-align: right">Machinable 5-Digit:</td>
+        <td><b>{{ aPattern.cbasbar | addCommas}}</b></td>
+      </tr>
+      <tr>
+        <td style="text-align: right">3-Digit Auto:</td>
+        <td><b>{{ aPattern.cdig3bar | addCommas }}</b></td>
+        <td style="text-align: right">Machinable 3-digit:</td>
+        <td><b>{{ aPattern.cbas3dig| addCommas }}</b></td>
+      </tr>
+      <tr>
+        <td style="text-align: right">Automated ADC/AADC:</td>
+        <td><b>{{ aPattern.caadc| addCommas }}</b></td>
+        <td style="text-align: right">Machinable ADC/AADC:</td>
+        <td><b>{{ aPattern.cpre | addCommas }}</b></td>
+      </tr>
+      <tr>
+        <td style="text-align: right">Automated MADC/MAADC:</td>
+        <td><b>{{ aPattern.cmaadc | addCommas }}</b></td>
+        <td style="text-align: right">Machinable MADC/MAADC:</td>
+        <td><b>{{ aPattern.cbas | addCommas }}</b></td>
+      </tr>
+      <tr>
+        <td style="text-align: right">High Density Enhanced CAR-RT:</td>
+        <td><b>{{ aPattern.cwalk125 | addCommas }}</b></td>
+        <td style="text-align: right">Basic CAR-RT:</td>
+        <td><b>{{ aPattern.ccrt | addCommas }}</b></td>
+      </tr>
+      <tr>
+        <td style="text-align: right">Saturation Enhanced CAR-RT:</td>
+        <td><b>{{ aPattern.csat| addCommas }}</b></td>
+        <td style="text-align: right">Pack and Ship/Estimate:</td>
+        <td><b>{{ aPattern.PackShip | addCommas }}</b></td>
+      </tr>
+    </table>
+    <!-- Foreign/Canadian Counts -->
+    <table *ngIf="(aPattern.foreign != 0) || (aPattern.canadian != 0)" class="table table-bordered table-striped table-condensed">
+      <tr>
+        <th class="col-xs-2">NON-U.S.A. Mail</th>
+        <th class="col-xs-10">Qty.</th>
+      </tr>
+      <tr>
+        <td>Foreign</td>
+        <td><b>{{ aPattern.foreign | addCommas }}</b></td>
+      </tr>
+      <tr>
+        <td>Canadian</td>
+        <td><b>{{ aPattern.canadian | addCommas }}</b></td>
+      </tr>
+    </table>
+  </div>
+  <!-- Mailpiece Components -->
+  <div class="row col-sm-12">
+    <h3>Mail Piece Components</h3>
+    <!-- PostCard or Self Mailer -->
+    <table *ngIf="(aPattern.PostName1 != null) || (aPattern.PostCode1 != null) || (aPattern.PostNote1 != null)" class="table table-bordered table-striped table-condensed">
+      <tr>
+        <th style="color:steelblue;">POSTCARD / SELF MAILER</th>
+      </tr>
+      <tr>
+        <th class="col-xs-2">Name</th>
+        <th class="col-xs-2">Code</th>
+        <th class="col-xs-8">Note</th>
+      </tr>
+      <tr>
+        <td>{{ aPattern.PostName1 }}</td>
+        <td>{{ aPattern.PostCode1 }}</td>
+        <td>{{ aPattern.PostNote1 }}</td>
+      </tr>
+    </table>
+    <!-- Outer Envelope -->
+    <table *ngIf="(aPattern.OuterName != null) || (aPattern.OuterCode != null)" class="table table-bordered table-striped table-condensed">
+      <tr>
+        <th style="color:steelblue;">OUTER ENVELOPE</th>
+      </tr>
+      <tr>
+        <th class="col-xs-2">Name</th>
+        <th class="col-xs-2">Code</th>
+        <th class="col-xs-8">Note</th>
+      </tr>
+      <tr>
+        <td *ngIf="aPattern.OuterName != null">{{ aPattern.OuterName }}</td>
+        <td *ngIf="aPattern.OuterName == null"></td>
+        <td *ngIf="aPattern.OuterCode != null">{{ aPattern.OuterCode }}</td>
+        <td *ngIf="aPattern.OuterCode == null"></td>
+        <td *ngIf="aPattern.OuterNote != null">{{ aPattern.OuterNote }}</td>
+        <td *ngIf="aPattern.OuterNote == null"></td>
+      </tr>
+    </table>
+    <!-- Inserts -->
+    <table *ngIf="(aPattern.Insert1Name != null) || (aPattern.Insert1Code != null) || (aPattern.Insert1Note != null)" class="table table-bordered table-striped table-condensed">
+      <tr>
+        <th style="color:steelblue;">INSERTS</th>
+      </tr>
+      <tr>
+        <th class="col-xs-2">Name</th>
+        <th class="col-xs-2">Code</th>
+        <th class="col-xs-8">Note</th>
+      </tr>
+      <tr *ngIf="(aPattern.Insert1Name != null) || (aPattern.Insert1Code != null) || (aPattern.Insert1Note != null)">
+        <td *ngIf="aPattern.Insert1Name != null">{{ aPattern.Insert1Name }}</td>
+        <td *ngIf="aPattern.Insert1Name == null"></td>
+        <td *ngIf="aPattern.Insert1Code != null">{{ aPattern.Insert1Code }}</td>
+        <td *ngIf="aPattern.Insert1Code == null"></td>
+        <td *ngIf="aPattern.Insert1Note != null">{{ aPattern.Insert1Note }}</td>
+        <td *ngIf="aPattern.Insert1Note == null"></td>
+      </tr>
+      <tr *ngIf="(aPattern.Insert2Name != null) || (aPattern.Insert2Code != null) || (aPattern.Insert2Note != null)">
+        <td *ngIf="aPattern.Insert2Name != null">{{ aPattern.Insert2Name }}</td>
+        <td *ngIf="aPattern.Insert2Name == null"></td>
+        <td *ngIf="aPattern.Insert2Code != null">{{ aPattern.Insert2Code }}</td>
+        <td *ngIf="aPattern.Insert2Code == null"></td>
+        <td *ngIf="aPattern.Insert2Note != null">{{ aPattern.Insert2Note }}</td>
+        <td *ngIf="aPattern.Insert2Note == null"></td>
+      </tr>
+      <tr *ngIf="(aPattern.Insert3Name != null) || (aPattern.Insert3Code != null) || (aPattern.Insert3Note != null)">
+        <td *ngIf="aPattern.Insert3Name != null">{{ aPattern.Insert3Name }}</td>
+        <td *ngIf="aPattern.Insert3Name == null"></td>
+        <td *ngIf="aPattern.Insert3Code != null">{{ aPattern.Insert3Code }}</td>
+        <td *ngIf="aPattern.Insert3Code == null"></td>
+        <td *ngIf="aPattern.Insert3Note != null">{{ aPattern.Insert3Note }}</td>
+        <td *ngIf="aPattern.Insert3Note == null"></td>
+      </tr>
+      <tr *ngIf="(aPattern.Insert4Name != null) || (aPattern.Insert4Code != null) || (aPattern.Insert4Note != null)">
+        <td *ngIf="aPattern.Insert4Name != null">{{ aPattern.Insert4Name }}</td>
+        <td *ngIf="aPattern.Insert4Name == null"></td>
+        <td *ngIf="aPattern.Insert4Code != null">{{ aPattern.Insert4Code }}</td>
+        <td *ngIf="aPattern.Insert4Code == null"></td>
+        <td *ngIf="aPattern.Insert4Note != null">{{ aPattern.Insert4Note }}</td>
+        <td *ngIf="aPattern.Insert4Note == null"></td>
+      </tr>
+      <tr *ngIf="(aPattern.Insert5Name != null) || (aPattern.Insert5Code != null) || (aPattern.Insert5Note != null)">
+        <td *ngIf="aPattern.Insert5Name != null">{{ aPattern.Insert5Name }}</td>
+        <td *ngIf="aPattern.Insert5Name == null"></td>
+        <td *ngIf="aPattern.Insert5Code != null">{{ aPattern.Insert5Code }}</td>
+        <td *ngIf="aPattern.Insert5Code == null"></td>
+        <td *ngIf="aPattern.Insert5Note != null">{{ aPattern.Insert5Note }}</td>
+        <td *ngIf="aPattern.Insert5Note == null"></td>
+      </tr>
+      <tr *ngIf="(aPattern.Insert6Name != null) || (aPattern.Insert6Code != null) || (aPattern.Insert6Note != null)">
+        <td *ngIf="aPattern.Insert6Name != null">{{ aPattern.Insert6Name }}</td>
+        <td *ngIf="aPattern.Insert6Name == null"></td>
+        <td *ngIf="aPattern.Insert6Code != null">{{ aPattern.Insert6Code }}</td>
+        <td *ngIf="aPattern.Insert6Code == null"></td>
+        <td *ngIf="aPattern.Insert6Note != null">{{ aPattern.Insert6Note }}</td>
+        <td *ngIf="aPattern.Insert6Note == null"></td>
+      </tr>
+      <tr *ngIf="(aPattern.Insert7Name != null) || (aPattern.Insert7Code != null) || (aPattern.Insert7Note != null)">
+        <td *ngIf="aPattern.Insert7Name != null">{{ aPattern.Insert7Name }}</td>
+        <td *ngIf="aPattern.Insert7Name == null"></td>
+        <td *ngIf="aPattern.Insert7Code != null">{{ aPattern.Insert7Code }}</td>
+        <td *ngIf="aPattern.Insert7Code == null"></td>
+        <td *ngIf="aPattern.Insert7Note != null">{{ aPattern.Insert7Note }}</td>
+        <td *ngIf="aPattern.Insert7Note == null"></td>
+      </tr>
+      <tr *ngIf="(aPattern.Insert8Name != null) || (aPattern.Insert8Code != null) || (aPattern.Insert8Note != null)">
+        <td *ngIf="aPattern.Insert8Name != null">{{ aPattern.Insert8Name }}</td>
+        <td *ngIf="aPattern.Insert8Name == null"></td>
+        <td *ngIf="aPattern.Insert8Code != null">{{ aPattern.Insert8Code }}</td>
+        <td *ngIf="aPattern.Insert8Code == null"></td>
+        <td *ngIf="aPattern.Insert8Note != null">{{ aPattern.Insert8Note }}</td>
+        <td *ngIf="aPattern.Insert8Note == null"></td>
+      </tr>
+      <tr *ngIf="(aPattern.Insert9Name != null) || (aPattern.Insert9Code != null) || (aPattern.Insert9Note != null)">
+        <td *ngIf="aPattern.Insert9Name != null">{{ aPattern.Insert9Name }}</td>
+        <td *ngIf="aPattern.Insert9Name == null"></td>
+        <td *ngIf="aPattern.Insert9Code != null">{{ aPattern.Insert9Code }}</td>
+        <td *ngIf="aPattern.Insert9Code == null"></td>
+        <td *ngIf="aPattern.Insert9Note != null">{{ aPattern.Insert9Note }}</td>
+        <td *ngIf="aPattern.Insert9Note == null"></td>
+      </tr>
+      <tr *ngIf="(aPattern.Insert10Name != null) || (aPattern.Insert10Code != null) || (aPattern.Insert10Note != null)">
+        <td *ngIf="aPattern.Insert10Name != null">{{ aPattern.Insert10Name }}</td>
+        <td *ngIf="aPattern.Insert10Name == null"></td>
+        <td *ngIf="aPattern.Insert10Code != null">{{ aPattern.Insert10Code }}</td>
+        <td *ngIf="aPattern.Insert10Code == null"></td>
+        <td *ngIf="aPattern.Insert10Note != null">{{ aPattern.Insert10Note }}</td>
+        <td *ngIf="aPattern.Insert10Note == null"></td>
+      </tr>
+      <tr *ngIf="(aPattern.Insert11Name != null) || (aPattern.Insert11Code != null) || (aPattern.Insert11Note != null)">
+        <td *ngIf="aPattern.Insert11Name != null">{{ aPattern.Insert11Name }}</td>
+        <td *ngIf="aPattern.Insert11Name == null"></td>
+        <td *ngIf="aPattern.Insert11Code != null">{{ aPattern.Insert11Code }}</td>
+        <td *ngIf="aPattern.Insert11Code == null"></td>
+        <td *ngIf="aPattern.Insert11Note != null">{{ aPattern.Insert11Note }}</td>
+        <td *ngIf="aPattern.Insert11Note == null"></td>
+      </tr>
+      <tr *ngIf="(aPattern.Insert12Name != null) || (aPattern.Insert12Code != null) || (aPattern.Insert12Note != null)">
+        <td *ngIf="aPattern.Insert12Name != null">{{ aPattern.Insert12Name }}</td>
+        <td *ngIf="aPattern.Insert12Name == null"></td>
+        <td *ngIf="aPattern.Insert12Code != null">{{ aPattern.Insert12Code }}</td>
+        <td *ngIf="aPattern.Insert12Code == null"></td>
+        <td *ngIf="aPattern.Insert12Note != null">{{ aPattern.Insert12Note }}</td>
+        <td *ngIf="aPattern.Insert12Note == null"></td>
+      </tr>
+      <tr *ngIf="(aPattern.Insert13Name != null) || (aPattern.Insert13Code != null) || (aPattern.Insert13Note != null)">
+        <td *ngIf="aPattern.Insert13Name != null">{{ aPattern.Insert13Name }}</td>
+        <td *ngIf="aPattern.Insert13Name == null"></td>
+        <td *ngIf="aPattern.Insert13Code != null">{{ aPattern.Insert13Code }}</td>
+        <td *ngIf="aPattern.Insert13Code == null"></td>
+        <td *ngIf="aPattern.Insert13Note != null">{{ aPattern.Insert13Note }}</td>
+        <td *ngIf="aPattern.Insert13Note == null"></td>
+      </tr>
+      <tr *ngIf="(aPattern.Insert14Name != null) || (aPattern.Insert14Code != null) || (aPattern.Insert14Note != null)">
+        <td *ngIf="aPattern.Insert14Name != null">{{ aPattern.Insert14Name }}</td>
+        <td *ngIf="aPattern.Insert14Name == null"></td>
+        <td *ngIf="aPattern.Insert14Code != null">{{ aPattern.Insert14Code }}</td>
+        <td *ngIf="aPattern.Insert14Code == null"></td>
+        <td *ngIf="aPattern.Insert14Note != null">{{ aPattern.Insert14Note }}</td>
+        <td *ngIf="aPattern.Insert14Note == null"></td>
+      </tr>
+      <tr *ngIf="(aPattern.Insert15Name != null) || (aPattern.Insert15Code != null) || (aPattern.Insert15Note != null)">
+        <td *ngIf="aPattern.Insert15Name != null">{{ aPattern.Insert15Name }}</td>
+        <td *ngIf="aPattern.Insert15Name == null"></td>
+        <td *ngIf="aPattern.Insert15Code != null">{{ aPattern.Insert15Code }}</td>
+        <td *ngIf="aPattern.Insert15Code == null"></td>
+        <td *ngIf="aPattern.Insert15Note != null">{{ aPattern.Insert15Note }}</td>
+        <td *ngIf="aPattern.Insert15Note == null"></td>
+      </tr>
+      <tr *ngIf="(aPattern.Insert16Name != null) || (aPattern.Insert16Code != null) || (aPattern.Insert16Note != null)">
+        <td *ngIf="aPattern.Insert16Name != null">{{ aPattern.Insert16Name }}</td>
+        <td *ngIf="aPattern.Insert16Name == null"></td>
+        <td *ngIf="aPattern.Insert16Code != null">{{ aPattern.Insert16Code }}</td>
+        <td *ngIf="aPattern.Insert16Code == null"></td>
+        <td *ngIf="aPattern.Insert16Note != null">{{ aPattern.Insert16Note }}</td>
+        <td *ngIf="aPattern.Insert16Note == null"></td>
+      </tr>
+      <tr *ngIf="(aPattern.Insert17Name != null) || (aPattern.Insert17Code != null) || (aPattern.Insert17Note != null)">
+        <td *ngIf="aPattern.Insert17Name != null">{{ aPattern.Insert17Name }}</td>
+        <td *ngIf="aPattern.Insert17Name == null"></td>
+        <td *ngIf="aPattern.Insert17Code != null">{{ aPattern.Insert17Code }}</td>
+        <td *ngIf="aPattern.Insert17Code == null"></td>
+        <td *ngIf="aPattern.Insert17Note != null">{{ aPattern.Insert17Note }}</td>
+        <td *ngIf="aPattern.Insert17Note == null"></td>
+      </tr>
+      <tr *ngIf="(aPattern.Insert18Name != null) || (aPattern.Insert18Code != null) || (aPattern.Insert18Note != null)">
+        <td *ngIf="aPattern.Insert18Name != null">{{ aPattern.Insert18Name }}</td>
+        <td *ngIf="aPattern.Insert18Name == null"></td>
+        <td *ngIf="aPattern.Insert18Code != null">{{ aPattern.Insert18Code }}</td>
+        <td *ngIf="aPattern.Insert8Code == null"></td>
+        <td *ngIf="aPattern.Insert18Note != null">{{ aPattern.Insert18Note }}</td>
+        <td *ngIf="aPattern.Insert18Note == null"></td>
+      </tr>
+      <tr *ngIf="(aPattern.Insert19Name != null) || (aPattern.Insert19Code != null) || (aPattern.Insert19Note != null)">
+        <td *ngIf="aPattern.Insert19Name != null">{{ aPattern.Insert19Name }}</td>
+        <td *ngIf="aPattern.Insert19Name == null"></td>
+        <td *ngIf="aPattern.Insert19Code != null">{{ aPattern.Insert19Code }}</td>
+        <td *ngIf="aPattern.Insert19Code == null"></td>
+        <td *ngIf="aPattern.Insert19Note != null">{{ aPattern.Insert19Note }}</td>
+        <td *ngIf="aPattern.Insert19Note == null"></td>
+      </tr>
+      <tr *ngIf="(aPattern.Insert20Name != null) || (aPattern.Insert20Code != null) || (aPattern.Insert20Note != null)">
+        <td *ngIf="aPattern.Insert20Name != null">{{ aPattern.Insert20Name }}</td>
+        <td *ngIf="aPattern.Insert20Name == null"></td>
+        <td *ngIf="aPattern.Insert20Code != null">{{ aPattern.Insert20Code }}</td>
+        <td *ngIf="aPattern.Insert20Code == null"></td>
+        <td *ngIf="aPattern.Insert20Note != null">{{ aPattern.Insert20Note }}</td>
+        <td *ngIf="aPattern.Insert20Note == null"></td>
+      </tr>
+      <tr *ngIf="(aPattern.Insert21Name != null) || (aPattern.Insert21Code != null) || (aPattern.Insert21Note != null)">
+        <td *ngIf="aPattern.Insert21Name != null">{{ aPattern.Insert21Name }}</td>
+        <td *ngIf="aPattern.Insert21Name == null"></td>
+        <td *ngIf="aPattern.Insert21Code != null">{{ aPattern.Insert21Code }}</td>
+        <td *ngIf="aPattern.Insert21Code == null"></td>
+        <td *ngIf="aPattern.Insert21Note != null">{{ aPattern.Insert21Note }}</td>
+        <td *ngIf="aPattern.Insert21Note == null"></td>
+      </tr>
+      <tr *ngIf="(aPattern.Insert22Name != null) || (aPattern.Insert22Code != null) || (aPattern.Insert22Note != null)">
+        <td *ngIf="aPattern.Insert22Name != null">{{ aPattern.Insert22Name }}</td>
+        <td *ngIf="aPattern.Insert22Name == null"></td>
+        <td *ngIf="aPattern.Insert22Code != null">{{ aPattern.Insert22Code }}</td>
+        <td *ngIf="aPattern.Insert22Code == null"></td>
+        <td *ngIf="aPattern.Insert22Note != null">{{ aPattern.Insert22Note }}</td>
+        <td *ngIf="aPattern.Insert22Note == null"></td>
+      </tr>
+      <tr *ngIf="(aPattern.Insert23Name != null) || (aPattern.Insert23Code != null) || (aPattern.Insert23Note != null)">
+        <td *ngIf="aPattern.Insert23Name != null">{{ aPattern.Insert23Name }}</td>
+        <td *ngIf="aPattern.Insert23Name == null"></td>
+        <td *ngIf="aPattern.Insert23Code != null">{{ aPattern.Insert23Code }}</td>
+        <td *ngIf="aPattern.Insert23Code == null"></td>
+        <td *ngIf="aPattern.Insert23Note != null">{{ aPattern.Insert23Note }}</td>
+        <td *ngIf="aPattern.Insert23Note == null"></td>
+      </tr>
+      <tr *ngIf="(aPattern.Insert24Name != null) || (aPattern.Insert24Code != null) || (aPattern.Insert24Note != null)">
+        <td *ngIf="aPattern.Insert24Name != null">{{ aPattern.Insert24Name }}</td>
+        <td *ngIf="aPattern.Insert24Name == null"></td>
+        <td *ngIf="aPattern.Insert24Code != null">{{ aPattern.Insert24Code }}</td>
+        <td *ngIf="aPattern.Insert24Code == null"></td>
+        <td *ngIf="aPattern.Insert24Note != null">{{ aPattern.Insert24Note }}</td>
+        <td *ngIf="aPattern.Insert24Note == null"></td>
+      </tr>
+      <tr *ngIf="(aPattern.Insert25Name != null) || (aPattern.Insert25Code != null) || (aPattern.Insert25Note != null)">
+        <td *ngIf="aPattern.Insert25Name != null">{{ aPattern.Insert25Name }}</td>
+        <td *ngIf="aPattern.Insert25Name == null"></td>
+        <td *ngIf="aPattern.Insert25Code != null">{{ aPattern.Insert25Code }}</td>
+        <td *ngIf="aPattern.Insert25Code == null"></td>
+        <td *ngIf="aPattern.Insert25Note != null">{{ aPattern.Insert25Note }}</td>
+        <td *ngIf="aPattern.Insert25Note == null"></td>
+      </tr>
+    </table>
+  </div>

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-patterns',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PatternsComponent implements OnInit {
 
-  constructor() { }
+  private subscription: any;    /** the Observable subscription to the routing Service */
+
+  pattern: string;
+
+  constructor(private route: ActivatedRoute) { }
 
   ngOnInit() {
+    /** get the given job (number) to be displayed from the incoming route parameters */
+    this.subscription = this.route.params.subscribe(params => { this.pattern = params['pattern'] });
   }
 
 }
