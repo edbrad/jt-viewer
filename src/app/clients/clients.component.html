@@ -3,7 +3,7 @@
   <hr>
   <div>
     <div class="row col-lg-7">
-      <input type="text" class="form-control" [(ngModel)]="clientFilter.Comp" placeholder="Client Filter">
+      <input #input type="text" class="form-control" [(ngModel)]="clientFilter.Comp" placeholder="Client Filter">
     </div>
   </div>
 </div>
@@ -11,6 +11,7 @@
   <hr>
 </div>
 <div class="container container-fluid">
+  <div style="position: relative" [ngBusy]="{busy: busy, message: 'Loading...', backdrop: true, delay: 200, minDuration: 600}"></div>
   <div class="flex-row row">
     <div class="col-xs-6 col-sm-4 col-lg-3 jt-hover-cursor" *ngFor="let client of distinctClients | filterBy: clientFilter" [routerLink]="['/client-details',client.Comp]">
       <div class="thumbnail">

@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChildren } from '@angular/core';
 
-import { Observable } from 'rxjs/Rx';
+import { Observable, Subscription } from 'rxjs/Rx';
 import { ToasterModule, ToasterService, ToasterConfig, Toast } from 'angular2-toaster';
 
 import { DataService } from '../data.service';
@@ -10,12 +10,16 @@ import { DataService } from '../data.service';
   templateUrl: './clients.component.html',
   styleUrls: ['./clients.component.css']
 })
-export class ClientsComponent implements OnInit {
+export class ClientsComponent implements OnInit, AfterViewInit {
+
+  @ViewChildren('input') vc;
 
   private toasterService: ToasterService;
   public config1 : ToasterConfig = new ToasterConfig({
     positionClass: 'toast-top-right'
   });
+
+  busy: Subscription
 
   clients: any[] = [];          /** the entire list of Clients */
   distinctClients: any[] = [];  /** clients to be displayed (db has duplicates) */
@@ -31,13 +35,17 @@ export class ClientsComponent implements OnInit {
     this.toasterService = toasterService;
    }
 
+   ngAfterViewInit() {
+        this.vc.first.nativeElement.focus();
+    }
+
   /**
    * @method ngOnInit
    * @description Component initialization
    */
   ngOnInit() {
     /** get distinct Client data - MS ACCESS data is duplicated for each Contact */
-    this.ds.getClients().subscribe((data => {
+     this.busy = this.ds.getClients().subscribe((data => {
       this.clients = data;
       this.distinctClients = this.removeArrayDuplicates(this.clients, "Comp");
 

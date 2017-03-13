@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChildren } from '@angular/core';
 import { Response } from '@angular/http';
 import { Router, ActivatedRoute, Params } from '@angular/router';
+
+import { Observable, Subscription } from 'rxjs/Rx';
 
 import { ToasterModule, ToasterService, ToasterConfig, Toast } from 'angular2-toaster';
 
@@ -13,6 +15,8 @@ import { DataService } from '../data.service';
 })
 export class JobsComponent implements OnInit {
 
+  @ViewChildren('input') vc;
+
   private subscription: any;    /** the Observable subscription to the routing Service */
   private toasterService: ToasterService;
   public config1 : ToasterConfig = new ToasterConfig({
@@ -24,9 +28,15 @@ export class JobsComponent implements OnInit {
   jobFilter: any = { JobDescp: '' };
   spaces: string ='&nbsp;&nbsp';
 
+  busy: Subscription
+
   constructor(private ds: DataService, private route: ActivatedRoute, toasterService: ToasterService) {
     this.toasterService = toasterService;
    }
+
+   ngAfterViewInit() {
+        this.vc.first.nativeElement.focus();
+    }
 
   ngOnInit() {
     /** TRICK: wrap ngOnInit stuff in an Observable to force the init to run again while the Component is
@@ -38,7 +48,7 @@ export class JobsComponent implements OnInit {
       this.subscription = this.route.params.subscribe(params => { this.jobnum = params['jobnum'] });
       //console.log('job: ' + this.jobnum);
       /** get all matching Jobsfrom the external REST API*/
-      this.ds.getJobs(this.jobnum).subscribe((data => {
+      this.busy = this.ds.getJobs(this.jobnum).subscribe((data => {
         this.jobs = data;
 
         var toast: Toast = {

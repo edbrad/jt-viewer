@@ -13,8 +13,9 @@
       </table>
     </div>
     <div class="container row col-lg-7 col-sm-12 col-xs-12">
-      <input type="text" class="form-control" [(ngModel)]="jobFilter.JobDescp" placeholder="Description Filter">
+      <input #input type="text" class="form-control" [(ngModel)]="jobFilter.JobDescp" placeholder="Description Filter">
     </div>
+    <div style="position: relative" [ngBusy]="{busy: busy, message: 'Loading...', backdrop: true, delay: 200, minDuration: 600}"></div>
     <table class="table table-striped table-condensed" [mfData]="jobs" #mf="mfDataTable" [mfRowsOnPage]="25">
       <thead>
         <tr>

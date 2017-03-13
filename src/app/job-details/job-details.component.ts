@@ -1,5 +1,4 @@
-//pdfmake = require('pdfmake');
-declare var pdfMake: any;
+declare var pdfMake: any;       /** prevent TypeScript typings error when using non-TypeSCript Lib (pdfmake) */
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
@@ -24,15 +23,18 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
   clients: any[] = [];
   aClient: {} = {};
 
-  pdf: any;
+  pdf: any;   /** pointer to pdfmake javascript library */
 
   constructor(private route: ActivatedRoute, private ds: DataService) { }
 
+  /**
+   * @method ngOnInit
+   * @description initialize Component
+   */
   ngOnInit() {
 
-
     /** get the given job (number) to be displayed from the incoming route parameters */
-    this.subscription = this.route.params.subscribe(params => {this.jobNumber = params['jobnum']});
+    this.subscription = this.route.params.subscribe(params => { this.jobNumber = params['jobnum'] });
 
     /** get a job from the external REST API */
     this.ds.getAJob(this.jobNumber).subscribe((data => {
@@ -48,6 +50,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
         //console.log('client: ' + JSON.stringify(this.aClient));
       }));
 
+      /** get corresponding Patterns and tally/compute total Job quantity */
       this.ds.getJobDetails(this.jobNumber).subscribe((data => {
         this.jobPatterns = data;
         //console.log('job patterns: ' + JSON.stringify(this.jobPatterns));
@@ -76,13 +79,19 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
   /**
    * @function getPatternCount
    * @description get the number of Patterns found for the given Job
-   * @returns {Number} the number of Patterns found
+   * @returns {number} the number of Patterns found
    */
-  private getPatternCount(){
+  private getPatternCount() {
     return this.jobPatterns.length;
   }
 
-  private getPatQty(pattern) {
+  /**
+   * @function getPatQty
+   * @description get the number of pieces for a given pattern
+   * @param pattern {string} the given pattern
+   * @returns {number} the number of pieces tallied
+   */
+  private getPatQty(pattern: string) {
     var patQty = 0;
     for (var i = 0; i < this.jobPatterns.length; i++) {
       if (pattern == this.jobPatterns[i].Jobpat) {
@@ -105,10 +114,13 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
     return patQty;
   }
 
-  private printJobTicket(){
-    //alert("Im working on it!");
+  /**
+   * @function printJobTicket
+   * @description generate a PDF of the EMS Job Ticket
+   */
+  private printJobTicket() {
     this.pdf = pdfMake;
-    var item: {jobnum: string} = {jobnum: this.jobNumber};
+    var item: { jobnum: string } = { jobnum: this.jobNumber };
     this.pdf.createPdf(this.buildPdf(item)).open();
   }
 
@@ -116,24 +128,20 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
     var pdfContent = value;
     var docDefinition = {
       content: [
-        { text: 'Executive Mailing Service - JOB TICKET'},
-        { text: 'EMS Job Number: ' + pdfContent.jobnum}
+        { text: 'Executive Mailing Service - JOB TICKET' },
+        { text: 'EMS Job Number: ' + pdfContent.jobnum }
       ]
     }
-    console.log(pdfContent);
+    //console.log(pdfContent);
     return docDefinition;
-}
-
-  private numberWithCommas(x: number) {
-    return x.toLocaleString();
   }
 
   /**
-     * @function formatUsPhone
-     * @description Reformat phone data into US Phone Number format/style
-     * @param {String} phone - phone number to be reformatted
-     * @returns {String} the reformatted phone number
-     */
+   * @function formatUsPhone
+   * @description Reformat phone data into US Phone Number format/style
+   * @param {String} phone - phone number to be reformatted
+   * @returns {String} the reformatted phone number
+   */
   private formatUsPhone(phone) {
     var phoneTest = new RegExp(/^((\+1)|1)? ?\(?(\d{3})\)?[ .-]?(\d{3})[ .-]?(\d{4})( ?(ext\.? ?|x)(\d*))?$/);
     if (phone != null) {
@@ -171,9 +179,9 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
 
   /**
    * @method ngOnDestroy
-   * @description Component clean-up
+   * @description Component memory clean-up
    */
-  ngOnDestroy(){
+  ngOnDestroy() {
     /** dispose of subsription to prevent memory leak */
     this.subscription.unsubscribe();
   }
