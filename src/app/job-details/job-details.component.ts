@@ -18,7 +18,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
   jobNumber: string;
   company: string;
   job: any;
-  aJob: {} = {};
+  aJob: any = {};
   totalQty: number;
   clients: any[] = [];
   aClient: {} = {};
