@@ -6,12 +6,14 @@ import { DataService } from '../data.service';
 import { GeocodeService } from '../geocode.service';
 import { Observable } from "rxjs/Observable";
 
+import { LoadingPage } from '../loading-indicator';
+
 @Component({
   selector: 'app-client-details',
   templateUrl: './client-details.component.html',
   styleUrls: ['./client-details.component.css']
 })
-export class ClientDetailsComponent implements OnInit, OnDestroy {
+export class ClientDetailsComponent extends LoadingPage implements OnInit, OnDestroy {
 
   private subscription: any;    /** the Observable subscription to the routing Service */
 
@@ -50,7 +52,9 @@ export class ClientDetailsComponent implements OnInit, OnDestroy {
    * @param {DataService} ds - the injected data service - used to get data from the REST API (pyACCESS)
    * @param {GeocodeService} gc - the injected Geocoding service - used to get Lat & Lng for a given address
    */
-  constructor(private route: ActivatedRoute, private ds: DataService, private gc: GeocodeService) { }
+  constructor(private route: ActivatedRoute, private ds: DataService, private gc: GeocodeService) {
+     super(true); // sets loading to true
+  }
 
   /**
    * @method ngOnInit
@@ -98,8 +102,10 @@ export class ClientDetailsComponent implements OnInit, OnDestroy {
       }));
 
       /** get all Jobs for the given Client from the external REST API */
+      this.standby();
       this.ds.getJobsForClient(this.clientName).subscribe((data => {
         this.clientJobs = data;
+        this.ready(); // sets loading to false
       }));
     }));
   }
