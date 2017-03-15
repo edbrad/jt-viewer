@@ -20,7 +20,6 @@
     "@angular/platform-browser": "^2.4.0",
     "@angular/platform-browser-dynamic": "^2.4.0",
     "@angular/router": "^3.4.0",
-    "angular2-busy": "^1.0.2",
     "angular2-chartjs": "^0.1.6",
     "angular2-datatable": "^0.5.3",
     "angular2-focus": "^1.0.3",

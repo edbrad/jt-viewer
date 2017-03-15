@@ -8,7 +8,6 @@ import { ChartModule } from 'angular2-chartjs';
 import { DataTableModule } from 'angular2-datatable';
 import { Ng2FilterPipeModule } from 'ng2-filter-pipe';
 import { ToasterModule, ToasterService } from 'angular2-toaster';
-import { BusyModule } from 'angular2-busy';
 
 import { AppComponent } from './app.component';
 import { JobsComponent } from './jobs/jobs.component';
@@ -51,8 +50,7 @@ import { AddCommasPipe } from './add-commas.pipe';
     ChartModule,
     DataTableModule,
     Ng2FilterPipeModule,
-    ToasterModule,
-    BusyModule
+    ToasterModule
   ],
   providers: [DataService, GeocodeService, ToasterService],
   bootstrap: [AppComponent]

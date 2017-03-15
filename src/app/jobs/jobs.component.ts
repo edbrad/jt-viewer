@@ -28,8 +28,6 @@ export class JobsComponent implements OnInit {
   jobFilter: any = { JobDescp: '' };
   spaces: string ='&nbsp;&nbsp';
 
-  busy: Subscription
-
   constructor(private ds: DataService, private route: ActivatedRoute, toasterService: ToasterService) {
     this.toasterService = toasterService;
    }
@@ -48,7 +46,7 @@ export class JobsComponent implements OnInit {
       this.subscription = this.route.params.subscribe(params => { this.jobnum = params['jobnum'] });
       //console.log('job: ' + this.jobnum);
       /** get all matching Jobsfrom the external REST API*/
-      this.busy = this.ds.getJobs(this.jobnum).subscribe((data => {
+      this.ds.getJobs(this.jobnum).subscribe((data => {
         this.jobs = data;
 
         var toast: Toast = {

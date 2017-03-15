@@ -115,24 +115,54 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * @function printJobTicket
+   * @method printJobTicket
    * @description generate a PDF of the EMS Job Ticket
    */
   private printJobTicket() {
     this.pdf = pdfMake;
-    var item: { jobnum: string } = { jobnum: this.jobNumber };
-    this.pdf.createPdf(this.buildPdf(item)).open();
+    this.pdf.createPdf(this.buildJobTicketPdf()).open();
   }
 
-  private buildPdf(value) {
-    var pdfContent = value;
+  /**
+   * @function buildJobTicketPdf
+   * @description build Job Ticket PDF layout object
+   * @returns an object describing the PDF to be generated
+   */
+  private buildJobTicketPdf() {
     var docDefinition = {
-      content: [
-        { text: 'Executive Mailing Service - JOB TICKET' },
-        { text: 'EMS Job Number: ' + pdfContent.jobnum }
-      ]
-    }
-    //console.log(pdfContent);
+      // PDF Metadata
+      info: {
+        title: 'Executive Mailing Service Job Ticket - Job Number ' + this.jobNumber,
+        author: 'Executive Mailing Service - Edward Bradley',
+        subject: 'Executive Mailing Service Job Ticket PDF',
+        keywords: 'EMS Job Ticket'
+      },
+      // Page Layout
+      pageMargins: [40, 80, 40, 40],
+      // Page Header
+      header: ['line1','line2'],
+      // Page Body
+      content: [],
+      // Page Footer
+      footer: {
+        margin: 20,
+        columns: [
+          {
+            width: '33%',
+            text: ''
+          },
+          {
+            width: '33%',
+            text: '2017 - Executive Mailing Service'
+          },
+          {
+            width: '33%',
+            text: ' '
+          }
+        ]
+      }
+    };
+    // Done
     return docDefinition;
   }
 
