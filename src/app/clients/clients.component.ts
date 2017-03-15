@@ -2,6 +2,7 @@ import { Component, OnInit, AfterViewInit, ViewChildren } from '@angular/core';
 
 import { Observable, Subscription } from 'rxjs/Rx';
 import { ToasterModule, ToasterService, ToasterConfig, Toast } from 'angular2-toaster';
+import { LoadingPage } from '../loading-indicator';
 
 import { DataService } from '../data.service';
 
@@ -10,7 +11,7 @@ import { DataService } from '../data.service';
   templateUrl: './clients.component.html',
   styleUrls: ['./clients.component.css']
 })
-export class ClientsComponent implements OnInit, AfterViewInit {
+export class ClientsComponent extends LoadingPage implements OnInit, AfterViewInit {
 
   @ViewChildren('input') vc;
 
@@ -30,6 +31,7 @@ export class ClientsComponent implements OnInit, AfterViewInit {
    *                           used to fetch data from the external REST API
    */
   constructor(private ds: DataService, toasterService: ToasterService) {
+    super(true); // sets loading to true
     this.toasterService = toasterService;
    }
 
@@ -41,21 +43,22 @@ export class ClientsComponent implements OnInit, AfterViewInit {
    * @method ngOnInit
    * @description Component initialization
    */
-   ngOnInit() {
-     /** get distinct Client data - MS ACCESS data is duplicated for each Contact */
+  ngOnInit() {
+    /** get distinct Client data - MS ACCESS data is duplicated for each Contact */
+     this.standby();
      this.ds.getClients().subscribe((data => {
-       this.clients = data;
-       this.distinctClients = this.removeArrayDuplicates(this.clients, "Comp");
+      this.clients = data;
+      this.distinctClients = this.removeArrayDuplicates(this.clients, "Comp");
+      this.ready(); // sets loading to false
+      var toast: Toast = {
+      type: 'success',
+      title: 'EMS Job Ticket Viewer',
+      body: this.clients.length + ' Clients Loaded from Database!'
+    };
 
-       var toast: Toast = {
-         type: 'success',
-         title: 'EMS Job Ticket Viewer',
-         body: this.clients.length + ' Clients Loaded from Database!'
-       };
-
-       this.toasterService.pop(toast);
-     }));
-   }
+    this.toasterService.pop(toast);
+    }));
+  }
 
   /**
    * @function removeArrayDuplicates

@@ -18,7 +18,6 @@ export class HeaderComponent implements OnInit {
   }
 
   jobSearch(){
-    //alert("You Clicked Search");
     this.router.navigateByUrl('/jobs/' + this.jobnum);
 
   }

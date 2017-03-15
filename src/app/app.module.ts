@@ -8,6 +8,7 @@ import { ChartModule } from 'angular2-chartjs';
 import { DataTableModule } from 'angular2-datatable';
 import { Ng2FilterPipeModule } from 'ng2-filter-pipe';
 import { ToasterModule, ToasterService } from 'angular2-toaster';
+import { LoadingPage, LoadingIndicator } from './loading-indicator';
 
 import { AppComponent } from './app.component';
 import { JobsComponent } from './jobs/jobs.component';
@@ -37,7 +38,8 @@ import { AddCommasPipe } from './add-commas.pipe';
     FooterComponent,
     ClientDetailsComponent,
     DashboardComponent,
-    AddCommasPipe
+    AddCommasPipe,
+    LoadingIndicator
   ],
   imports: [
     BrowserModule,

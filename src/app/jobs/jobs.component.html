@@ -1,61 +1,68 @@
 <div class="container">
   <h2>JOB SEARCH RESULTS</h2>
   <hr>
-  <div>
-    <div class="row col-lg-7 col-sm-12 col-xs-12">
-      <table class="table table-bordered table-striped table-condensed">
-        <tr>
-          <td width="20%"><b>SEARCH VALUE:</b></td>
-          <td width="30%">{{jobnum}}</td>
-          <td width="20%"><b># JOBS FOUND:</b></td>
-          <td width="30%">{{getJobCount()}}</td>
-        </tr>
-      </table>
+  <div [ngSwitch]="loading">
+    <div>
+      <div class="row col-lg-7 col-sm-12 col-xs-12">
+        <table class="table table-bordered table-striped table-condensed">
+          <tr>
+            <td width="20%"><b>SEARCH VALUE:</b></td>
+            <td width="30%">{{jobnum}}</td>
+            <td width="20%"><b># JOBS FOUND:</b></td>
+            <td width="30%">{{getJobCount()}}</td>
+          </tr>
+        </table>
+      </div>
+      <div class="container row col-lg-7 col-sm-12 col-xs-12">
+        <input #input type="text" class="form-control" [(ngModel)]="jobFilter.JobDescp" placeholder="Description Filter">
+      </div>
+      <div *ngSwitchCase="false">
+        <table class="table table-striped table-condensed" [mfData]="jobs" #mf="mfDataTable" [mfRowsOnPage]="25">
+          <thead>
+            <tr>
+              <td colspan="5">
+                <mfBootstrapPaginator [rowsOnPageSet]="[25,50,100]">
+                </mfBootstrapPaginator>
+              </td>
+            </tr>
+            <tr>
+              <th style="width: 10%">
+                <mfDefaultSorter by="Jobnum">Job Number</mfDefaultSorter>
+              </th>
+              <th style="width: 60%">
+                <mfDefaultSorter by="JobDescp">Description</mfDefaultSorter>
+              </th>
+              <th style="width: 15%">
+                <mfDefaultSorter by="DropDate">Starting Drop Date</mfDefaultSorter>
+              </th>
+              <th style="width: 15%">
+                <mfDefaultSorter by="ToDropDate">Ending Drop Date</mfDefaultSorter>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let job of mf.data | filterBy: jobFilter">
+              <td>
+                <a [routerLink]="['/job-details', job.Jobnum]">{{job.Jobnum}}</a>
+              </td>
+              <td>{{job.JobDescp}}</td>
+              <td>{{job.DropDate}}</td>
+              <td>{{job.ToDropDate}}</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="5">
+                <mfBootstrapPaginator [rowsOnPageSet]="[25,50,100]">
+                </mfBootstrapPaginator>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
     </div>
-    <div class="container row col-lg-7 col-sm-12 col-xs-12">
-      <input #input type="text" class="form-control" [(ngModel)]="jobFilter.JobDescp" placeholder="Description Filter">
+    <div *ngSwitchCase="true" class="container row col-lg-12 col-sm-12 col-xs-12">
+      <loading-indicator style="margin-left: 34%; margin-top: 5%">Loading Data...</loading-indicator>
     </div>
-    <table class="table table-striped table-condensed" [mfData]="jobs" #mf="mfDataTable" [mfRowsOnPage]="25">
-      <thead>
-        <tr>
-          <td colspan="5">
-            <mfBootstrapPaginator [rowsOnPageSet]="[25,50,100]">
-            </mfBootstrapPaginator>
-          </td>
-        </tr>
-        <tr>
-          <th style="width: 10%">
-            <mfDefaultSorter by="Jobnum">Job Number</mfDefaultSorter>
-          </th>
-          <th style="width: 60%">
-            <mfDefaultSorter by="JobDescp">Description</mfDefaultSorter>
-          </th>
-          <th style="width: 15%">
-            <mfDefaultSorter by="DropDate">Starting Drop Date</mfDefaultSorter>
-          </th>
-          <th style="width: 15%">
-            <mfDefaultSorter by="ToDropDate">Ending Drop Date</mfDefaultSorter>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let job of mf.data | filterBy: jobFilter">
-          <td>
-            <a [routerLink]="['/job-details', job.Jobnum]">{{job.Jobnum}}</a>
-          </td>
-          <td>{{job.JobDescp}}</td>
-          <td>{{job.DropDate}}</td>
-          <td>{{job.ToDropDate}}</td>
-        </tr>
-      </tbody>
-      <tfoot>
-        <tr>
-          <td colspan="5">
-            <mfBootstrapPaginator [rowsOnPageSet]="[25,50,100]">
-            </mfBootstrapPaginator>
-          </td>
-        </tr>
-      </tfoot>
-    </table>
   </div>
 </div>

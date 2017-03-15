@@ -5,6 +5,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Observable, Subscription } from 'rxjs/Rx';
 
 import { ToasterModule, ToasterService, ToasterConfig, Toast } from 'angular2-toaster';
+import { LoadingPage } from '../loading-indicator';
 
 import { DataService } from '../data.service';
 
@@ -13,7 +14,7 @@ import { DataService } from '../data.service';
   templateUrl: './jobs.component.html',
   styleUrls: ['./jobs.component.css']
 })
-export class JobsComponent implements OnInit {
+export class JobsComponent extends LoadingPage implements OnInit {
 
   @ViewChildren('input') vc;
 
@@ -29,6 +30,7 @@ export class JobsComponent implements OnInit {
   spaces: string ='&nbsp;&nbsp';
 
   constructor(private ds: DataService, private route: ActivatedRoute, toasterService: ToasterService) {
+    super(true); // sets loading to true
     this.toasterService = toasterService;
    }
 
@@ -41,20 +43,20 @@ export class JobsComponent implements OnInit {
      * still loaded (e.g. run a new search while still on the job results page/route)
      */
     this.route.params.subscribe((params: Params) => {
-
       /** get the given job number (full or partial) to be searched for from the incoming route parameters */
       this.subscription = this.route.params.subscribe(params => { this.jobnum = params['jobnum'] });
       //console.log('job: ' + this.jobnum);
       /** get all matching Jobsfrom the external REST API*/
+      this.standby();
       this.ds.getJobs(this.jobnum).subscribe((data => {
         this.jobs = data;
+        this.ready(); // sets loading to false
 
         var toast: Toast = {
           type: 'success',
           title: 'EMS Job Ticket Viewer',
           body: this.jobs.length + ' Jobs Loaded from Database!'
         };
-
         this.toasterService.pop(toast);
       }));
 
