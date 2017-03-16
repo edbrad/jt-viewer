@@ -1,4 +1,5 @@
 declare var pdfMake: any;       /** prevent TypeScript typings error when using non-TypeSCript Lib (pdfmake) */
+declare var moment: any;        /** prevent TypeScript typings error when using non-TypeSCript Lib (momentJS) */
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
@@ -21,7 +22,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
   aJob: any = {};
   totalQty: number;
   clients: any[] = [];
-  aClient: {} = {};
+  aClient: any = {};
 
   pdf: any;   /** pointer to pdfmake javascript library */
 
@@ -130,6 +131,9 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
    */
   private buildJobTicketPdf() {
     var docDefinition = {
+      // Page Layout
+      pageSize: 'LETTER',
+      pageOrientation: 'portrait',
       // PDF Metadata
       info: {
         title: 'Executive Mailing Service Job Ticket - Job Number ' + this.jobNumber,
@@ -137,34 +141,206 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
         subject: 'Executive Mailing Service Job Ticket PDF',
         keywords: 'EMS Job Ticket'
       },
-      // Page Layout
-      pageMargins: [40, 80, 40, 40],
       // Page Header
-      header: ['line1','line2'],
+      header: [
+        { columns: [
+          { width: '33%', text: this.company + ' - ' + this.jobNumber, alignment: 'left', fontSize: 10 },
+          { width: '33%', text: 'JOB TICKET', style: 'bold', alignment: 'center', fontSize: 18 },
+          { width: '33%', text: 'Job Ticket Date: ' + moment(this.aJob.JobTicketDate).format('l') + '\nPage x of y', alignment: 'right', fontSize: 10 }
+        ], margin: [30,8,30,3]},
+        { canvas: [
+          {
+            type: 'line',
+            x1: 30,
+            y1: 5,
+            x2: 575,
+            y2: 5,
+            lineWidth: 0.5
+          }
+        ]
+      }],
       // Page Body
-      content: [],
+      content: [
+        {
+          columns: [
+            {
+              width: '60%',
+              margin: [0, 20, 30, 3],
+              stack: [
+                { text: this.aClient.Contact + ': ' + this.formatUsPhone(this.aClient.phone), style: 'bold' },
+                { text: this.aClient.Comp},
+                { text: this.aClient.Add1},
+                { text: this.aClient.Add2},
+                { text: this.aClient.City + ', ' + this.aClient.state + ' ' + this.formatUsZipCode(this.aClient.zip) }
+              ]
+            },
+            {
+              width: '25%',
+              margin: [0, 20, 30, 3],
+              stack: [
+                { text: 'Job Number: ' },
+                { text: 'Date Received: ' },
+                { text: 'Drop Date: ' },
+                { text: 'To: ' }
+              ]
+            },
+            {
+              width: '15%',
+              margin: [0, 20, 30, 3],
+              stack: [
+                { text: this.jobNumber, style: 'bold' },
+                { text: moment(this.aJob.DateReceived).format('l'), style: 'bold' },
+                { text: this.aJob.DropDate, style: 'bold' },
+                { text: this.aJob.ToDropDate, style: 'bold' }
+              ]
+            }
+          ]
+        },
+        { text: ' ' },
+        {
+          table: {
+            headerRows: 1,
+            widths: ['25%', '75%'],
+            body: this.buildJobTicketBody()
+          },
+          layout: 'noBorders'
+        },
+        { text: ' '},
+        { text: 'PATTERN DETAILS: ', style: 'bold', fontSize: 14},
+        { text: ' '},
+        {
+          table: {
+            headerRows: 0,
+            widths: ['15%', '85%'],
+            body: this.buildPatternBody()
+          },
+          layout: 'noBorders'
+        },
+        { text: 'DEPARTMENTAL INSTRUCTIONS: ', style: 'bold', fontSize: 14},
+        { text: ' ' },
+        {
+          table: {
+            headerRows: 1,
+            widths: ['25%', '75%'],
+            body: this.buildDepartmentBody()
+          }
+        },
+      ],
       // Page Footer
       footer: {
-        margin: 20,
+        margin: [30,8,30,3],
         columns: [
           {
             width: '33%',
-            text: ''
+            text: 'JT-Viewer - Version 0.0.0',
+            fontSize: 8
           },
           {
             width: '33%',
-            text: '2017 - Executive Mailing Service'
+            text: '2017 - Executive Mailing Service',
+            fontSize: 8,
+            alignment: 'center'
           },
           {
             width: '33%',
-            text: ' '
+            text: 'Page x of y',
+            fontSize: 8,
+            alignment: 'right'
           }
         ]
+      },
+      styles:{
+        bold: { bold: true }
       }
     };
     // Done
     return docDefinition;
   }
+
+  /**
+   *
+   */
+  private buildJobTicketBody(){
+    var body = [];
+    body.push([{ text: 'Job Description:', style: 'bold'}, this.aJob.JobDescp]);
+    body.push([{ text: 'Permit:', style: 'bold'}, this.aJob.Permit]);
+    body.push([{ text: 'Postage:', style: 'bold'}, this.aJob.PostageBy]);
+    body.push([{ text: 'Special Info:', style: 'bold'}, { text: this.aJob.MeterInst, style: 'bold'}]);
+    body.push([{ text: 'Receiving Dept.:', style: 'bold'}, this.aJob.RDept]);
+    body.push([{ text: 'Samples:', style:'bold'}, this.aJob.Sample1]);
+    if (this.aJob.Sample2 != null){body.push([{ text: ' '}, this.aJob.Sample2]);};
+    if (this.aJob.Sample3 != null){body.push([{ text: ' '}, this.aJob.Sample3]);};
+    if (this.aJob.Sample4 != null){body.push([{ text: ' '}, this.aJob.Sample4]);};
+    if (this.aJob.Sample5 != null){body.push([{ text: ' '}, this.aJob.Sample5]);};
+    if (this.aJob.Sample6 != null){body.push([{ text: ' '}, this.aJob.Sample6]);};
+    if (this.aJob.Sample7 != null){body.push([{ text: ' '}, this.aJob.Sample7]);};
+    if (this.aJob.Sample8 != null){body.push([{ text: ' '}, this.aJob.Sample8]);};
+    if (this.aJob.Sample9 != null){body.push([{ text: ' '}, this.aJob.Sample9]);};
+    if (this.aJob.Sample10 != null){body.push([{ text: ' '}, this.aJob.Sample10]);};
+    if (this.aJob.Sample11 != null){body.push([{ text: ' '}, this.aJob.Sample11]);};
+    if (this.aJob.Sample12 != null){body.push([{ text: ' '}, this.aJob.Sample12]);};
+    if (this.aJob.Sample13 != null){body.push([{ text: ' '}, this.aJob.Sample13]);};
+    if (this.aJob.Sample14 != null){body.push([{ text: ' '}, this.aJob.Sample14]);};
+    if (this.aJob.Sample15 != null){body.push([{ text: ' '}, this.aJob.Sample15]);};
+    if (this.aJob.Sample16 != null){body.push([{ text: ' '}, this.aJob.Sample16]);};
+    if (this.aJob.Sample17 != null){body.push([{ text: ' '}, this.aJob.Sample17]);};
+    if (this.aJob.Sample18 != null){body.push([{ text: ' '}, this.aJob.Sample18]);};
+    if (this.aJob.Sample19 != null){body.push([{ text: ' '}, this.aJob.Sample19]);};
+    if (this.aJob.Sample20 != null){body.push([{ text: ' '}, this.aJob.Sample20]);};
+    if (this.aJob.Sample21 != null){body.push([{ text: ' '}, this.aJob.Sample21]);};
+    if (this.aJob.Sample22 != null){body.push([{ text: ' '}, this.aJob.Sample22]);};
+    body.push([{ text: 'TOTAL QTY:', style:'bold', fontSize: 12}, { text: this.addCommas(this.totalQty), style: 'bold', fontSize: 12}]);
+    //
+    return body;
+  }
+
+  private buildPatternBody() {
+    var body = [];
+    var patternCount = 0;
+    console.log(JSON.stringify(this.jobPatterns));
+    for (var i = 0; i < this.jobPatterns.length; i++) {
+      body.push([{ text: 'Pattern ' + this.jobPatterns[i].Jobpat.toUpperCase() + ':', style: 'bold' }, { text: this.jobPatterns[i].MailClass + ', ' + this.jobPatterns[i].Payment }]);
+      if (this.jobPatterns[i].DESCP1 != null) { body.push([{ text: ' ' }, { text: this.jobPatterns[i].DESCP1 }]); };
+      if (this.jobPatterns[i].DESCP2 != null) { body.push([{ text: ' ' }, { text: this.jobPatterns[i].DESCP2 }]); };
+      if (this.jobPatterns[i].DESCP3 != null) { body.push([{ text: ' ' }, { text: this.jobPatterns[i].DESCP3 }]); };
+      if (this.jobPatterns[i].DESCP4 != null) { body.push([{ text: ' ' }, { text: this.jobPatterns[i].DESCP4 }]); };
+      if (this.jobPatterns[i].DESCP5 != null) { body.push([{ text: ' ' }, { text: this.jobPatterns[i].DESCP5 }]); };
+      if (this.jobPatterns[i].DESCP6 != null) { body.push([{ text: ' ' }, { text: this.jobPatterns[i].DESCP6 }]); };
+      body.push([{ text: ' ' }, {
+        table: {
+          widths: ['40%', '10%', '40%', '10%'],
+          body: [
+            [{ text: '5-Digit Auto:' }, { text: this.addCommas(this.jobPatterns[i].cdig5bar) }, { text: 'Machinable 5-Digit:' }, { text: this.addCommas(this.jobPatterns[i].cbasbar) }],
+            [{ text: '3-Digit Auto:' }, { text: this.addCommas(this.jobPatterns[i].cdig3bar) }, { text: 'Machinable 3-digit:' }, { text: this.addCommas(this.jobPatterns[i].cbas3dig) }],
+            [{ text: 'Automated ADC/AADC:'}, { text: this.addCommas(this.jobPatterns[i].caadc) }, { text: 'Machinable ADC/AADC:' }, { text: this.addCommas(this.jobPatterns[i].cpre) }],
+            [{ text: 'Automated MADC/MAADC:' }, { text: this.addCommas(this.jobPatterns[i].cmaadc) }, { text: 'Machinable MADC/MAADC:' }, { text: this.addCommas(this.jobPatterns[i].cbas) }],
+            [{ text: 'High Density Enhanced CAR-RT: ' }, { text: this.addCommas(this.jobPatterns[i].cwalk125) }, { text: 'Basic CAR-RT:' }, { text: this.addCommas(this.jobPatterns[i].ccrt) }],
+            [{ text: 'Saturation Enhanced CAR-RT: ' }, { text: this.addCommas(this.jobPatterns[i].csat) }, { text: 'Pack and Ship/Estimate:' }, { text: this.addCommas(this.jobPatterns[i].PackShip) }],
+            [{ text: ' ' },{ text: ' ' },{ text: 'TOTAL: ', style: 'bold', fontSize: 11 }, { text: this.addCommas(this.getPatQty(this.jobPatterns[i].Jobpat)), style: 'bold', fontSize: 11}]
+          ]
+        },
+        //layout: 'noBorders',
+        fontSize: 10
+      }]);
+      body.push([{ text: ' ' }, { text: ' '}]);
+    }
+
+    //console.log(body);
+    return body;
+  }
+
+  private buildDepartmentBody() {
+    var body = [];
+    body.push([{ text: 'Excess Stock:', style: 'bold' }, this.aJob.stockInst]);
+    body.push([{ text: 'DP/Imaging:', style: 'bold' }, this.aJob.CRInst]);
+    body.push([{ text: 'Inkjet Dept.:', style: 'bold' }, this.aJob.AdDept]);
+    body.push([{ text: 'Bindery Dept.:', style: 'bold' }, this.aJob.BDInst]);
+    body.push([{ text: 'Inserting Dept.:', style: 'bold' }, this.aJob.InDInst]);
+    body.push([{ text: 'Postage Statements:', style: 'bold' }, this.aJob.PO3602Inst]);
+    body.push([{ text: 'Salesperson/CSR:', style: 'bold' }, this.aJob.Remark]);
+    return body;
+  }
+
 
   /**
    * @function formatUsPhone
@@ -184,7 +360,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
         return phone;
       }
     } else {
-      return phone;
+      return ' ';
     }
   }
 
@@ -205,6 +381,22 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
     } else {
       return zip;
     }
+  }
+
+  /**
+   *
+   * @param x
+   */
+  private formatUsDate(x: string){
+    return moment(x).format('l')
+  }
+
+  /**
+   *
+   * @param intNum
+   */
+  private addCommas(intNum){
+    return (intNum + '').replace(/(\d)(?=(\d{3})+$)/g, '$1,');
   }
 
   /**

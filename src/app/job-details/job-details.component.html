@@ -32,11 +32,19 @@
       </tr>
       <tr>
         <td><b>Date Received:</b></td>
-        <td>{{aJob.DateReceived}}</td>
+        <td>{{formatUsDate(aJob.DateReceived)}}</td>
       </tr>
       <tr>
         <td><b>Description:</b></td>
         <td>{{aJob.JobDescp}}</td>
+      </tr>
+      <tr>
+        <td><b>Permit Number:</b></td>
+        <td>{{aJob.Permit}}</td>
+      </tr>
+      <tr>
+        <td><b>Postage:</b></td>
+        <td>{{aJob.PostageBy}}</td>
       </tr>
       <tr>
         <td><b>Special Info.:</b></td>
@@ -57,10 +65,6 @@
       <tr *ngIf="aJob.ToDropDate != null">
         <td><b>Ending Drop Date:</b></td>
         <td><b>{{aJob.ToDropDate}}</b></td>
-      </tr>
-      <tr>
-        <td><b>Permit Number:</b></td>
-        <td>{{aJob.Permit}}</td>
       </tr>
       <tr>
         <td><b>Total Pieces:</b></td>
