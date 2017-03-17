@@ -15,20 +15,20 @@
       <tr>
         <td><b>Company:</b></td>
         <td *ngIf="aClient.Add2 != null">
-          <b>{{aClient.Comp}}</b><br> {{aClient.Add1}}
-          <br> {{aClient.Add2}}
-          <br> {{aClient.City}}, {{aClient.state}} {{formatUsZipCode(aClient.zip)}}<br> {{formatUsPhone(aClient.phone)}}
+          <b>{{aContact.Comp}}</b><br> {{aContact.Add1}}
+          <br> {{aContact.Add2}}
+          <br> {{aContact.City}}, {{aContact.state}} {{formatUsZipCode(aContact.zip)}}<br> {{formatUsPhone(aContact.phone)}}
           <br>
         </td>
         <td *ngIf="aClient.Add2 == null">
           <b>{{aClient.Comp}}</b><br> {{aClient.Add1}}
-          <br> {{aClient.City}}, {{aClient.state}} {{formatUsZipCode(aClient.zip)}}<br> {{formatUsPhone(aClient.phone)}}
+          <br> {{aContact.City}}, {{aContact.state}} {{formatUsZipCode(aContact.zip)}}<br> {{formatUsPhone(aContact.phone)}}
           <br>
         </td>
       </tr>
       <tr>
         <td><b>Contact:</b></td>
-        <td>{{aJob.Contact}}</td>
+        <td>{{aContact.Contact}}</td>
       </tr>
       <tr>
         <td><b>Date Received:</b></td>
@@ -36,7 +36,7 @@
       </tr>
       <tr>
         <td><b>Description:</b></td>
-        <td>{{aJob.JobDescp}}</td>
+        <td><b>{{aJob.JobDescp}}</b></td>
       </tr>
       <tr>
         <td><b>Permit Number:</b></td>
@@ -197,23 +197,23 @@
         <td class="col-xs-9">{{aJob.stockInst}}</td>
       </tr>
       <tr>
-        <td><b>Computer Room:</b></td>
+        <td><b>DP/Imaging:</b></td>
         <td>{{aJob.CRInst}}</td>
       </tr>
       <tr>
-        <td><b>Inkjet Dept:</b></td>
+        <td><b>Inkjet Dept.:</b></td>
         <td>{{aJob.AdDept}}</td>
       </tr>
       <tr>
-        <td><b>Bindery Dept:</b></td>
+        <td><b>Bindery Dept.:</b></td>
         <td>{{aJob.BDInst}}</td>
       </tr>
       <tr>
-        <td><b>Stamp Dept:</b></td>
+        <td><b>Stamp Dept.:</b></td>
         <td>{{aJob.StampInst}}</td>
       </tr>
       <tr>
-        <td><b>Inserting Dept:</b></td>
+        <td><b>Inserting Dept.:</b></td>
         <td>{{aJob.InDInst}}</td>
       </tr>
       <tr>
