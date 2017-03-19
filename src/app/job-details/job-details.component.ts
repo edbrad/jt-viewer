@@ -123,7 +123,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
    */
   private printJobTicket() {
     this.pdf = pdfMake;
-    this.pdf.createPdf(this.buildJobTicketPdf()).open();
+    this.pdf.createPdf(this.buildJobTicketPdf(this.company, this.jobNumber, this.aJob)).open();
   }
 
   /**
@@ -131,7 +131,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
    * @description build Job Ticket PDF layout object
    * @returns an object describing the PDF to be generated
    */
-  private buildJobTicketPdf() {
+  private buildJobTicketPdf(company, jobNumber, aJob) {
     var docDefinition = {
       // Page Layout
       pageSize: 'LETTER',
@@ -144,29 +144,35 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
         keywords: 'EMS Job Ticket'
       },
       // Page Header
-      header: [
-        {
-          columns: [
-            { width: '33%', text: this.company + ' - ' + this.jobNumber, alignment: 'left', fontSize: 10 },
-            { width: '33%', text: 'JOB TICKET', style: 'bold', alignment: 'center', fontSize: 18 },
-            { width: '33%', text: 'Job Ticket Date: ' + moment(this.aJob.JobTicketDate).format('l') + '\nPage x of y', alignment: 'right', fontSize: 10 }
-          ], margin: [30, 8, 30, 3]
-        },
+      header: function (currentPage, pageCount) {
+        return [
+          {
+            columns: [
+              { text: company + ' - ' + jobNumber +
+                '\nTS: ' + moment().format('MMMM Do YYYY, h:mm:ss a'), alignment: 'left', margin: [40, 8, 30, 3], fontSize: 8 },
+              { text: 'JOB TICKET', bold: true, alignment: 'center', margin: [40, 8, 30, 3], fontSize: 18 },
+              {
+                text: 'Job Ticket Date: ' + moment(aJob.JobTicketDate).format('l') +
+                '\nPAGE: ' + currentPage + ' OF ' + pageCount, alignment: 'right', margin: [30, 8, 30, 3], fontSize: 8, bold: true
+              }
+            ]
+          }
+        ]
+      },
+      // Page Body
+      content: [
         {
           canvas: [
             {
               type: 'line',
-              x1: 30,
+              x1: 0,
               y1: 5,
-              x2: 575,
+              x2: 543,
               y2: 5,
               lineWidth: 0.5
-            }
-          ]
-        }],
-      // Page Body
-      content: [
-        {
+            }]
+        },
+          {
           columns: [
             {
               width: '60%',
@@ -186,7 +192,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
                 { text: 'Job Number: ' },
                 { text: 'Date Received: ' },
                 { text: 'Drop Date: ' },
-                { text: 'To: ' }
+                { text: '- To: ' }
               ]
             },
             {
@@ -210,7 +216,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
           },
         },
         { text: ' ' },
-        { text: 'PATTERN DETAILS: ', style: 'bold', fontSize: 14 },
+        { text: 'PATTERN DETAILS: ', bold: true, fontSize: 14 },
         { text: ' ' },
         {
           table: {
@@ -231,26 +237,18 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
         }
       ],
       // Page Footer
-      footer: {
-        margin: [30, 8, 30, 3],
-        columns: [
+      footer: function (currentPage, pageCount) {
+        return [
           {
-            width: '33%',
-            text: 'JT-Viewer - Version 0.0.0',
-            fontSize: 8
+            columns: [
+              {
+                text: 'JT-Viewer - Version 0.0.0' +
+                '\nTS: ' + moment().format('MMMM Do YYYY, h:mm:ss a'), alignment: 'left', margin: [40, 8, 30, 3], fontSize: 8
+              },
+              { text: '2017 Executive Mailing Service', alignment: 'center', margin: [40, 8, 30, 3], fontSize: 8 },
+              { text: 'PAGE: ' + currentPage + ' OF ' + pageCount, alignment: 'right', margin: [40, 8, 30, 3], fontSize: 8, bold: true }
+            ]
           },
-          {
-            width: '33%',
-            text: '2017 - Executive Mailing Service',
-            fontSize: 8,
-            alignment: 'center'
-          },
-          {
-            width: '33%',
-            text: 'Page x of y',
-            fontSize: 8,
-            alignment: 'right'
-          }
         ]
       },
       styles: {
@@ -293,7 +291,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
     if (this.aJob.Sample20 != null) { body.push([{ text: ' ' }, this.aJob.Sample20]); };
     if (this.aJob.Sample21 != null) { body.push([{ text: ' ' }, this.aJob.Sample21]); };
     if (this.aJob.Sample22 != null) { body.push([{ text: ' ' }, this.aJob.Sample22]); };
-    body.push([{ text: 'TOTAL QTY:', style: 'bold', fontSize: 12 }, { text: this.addCommas(this.totalQty), style: 'bold', fontSize: 12 }]);
+    body.push([{ text: 'TOTAL PIECES:', style: 'bold', fontSize: 12 }, { text: this.addCommas(this.totalQty), style: 'bold', fontSize: 12 }]);
     //
     return body;
   }
@@ -312,29 +310,60 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
       if (this.jobPatterns[i].DESCP4 != null) { body.push([{ text: ' ' }, { text: this.jobPatterns[i].DESCP4 }]); };
       if (this.jobPatterns[i].DESCP5 != null) { body.push([{ text: ' ' }, { text: this.jobPatterns[i].DESCP5 }]); };
       if (this.jobPatterns[i].DESCP6 != null) { body.push([{ text: ' ' }, { text: this.jobPatterns[i].DESCP6 }]); };
-      body.push([{ text: ' ' }, {
-        table: {
-          widths: ['38%', '12%', '38%', '12%'],
-          body: [
-            [{ text: '5-Digit Auto:' }, { text: this.addCommas(this.jobPatterns[i].cdig5bar) }, { text: 'Machinable 5-Digit:' }, { text: this.addCommas(this.jobPatterns[i].cbasbar) }],
-            [{ text: '3-Digit Auto:' }, { text: this.addCommas(this.jobPatterns[i].cdig3bar) }, { text: 'Machinable 3-digit:' }, { text: this.addCommas(this.jobPatterns[i].cbas3dig) }],
-            [{ text: 'Automated ADC/AADC:' }, { text: this.addCommas(this.jobPatterns[i].caadc) }, { text: 'Machinable ADC/AADC:' }, { text: this.addCommas(this.jobPatterns[i].cpre) }],
-            [{ text: 'Automated MADC/MAADC:' }, { text: this.addCommas(this.jobPatterns[i].cmaadc) }, { text: 'Machinable MADC/MAADC:' }, { text: this.addCommas(this.jobPatterns[i].cbas) }],
-            [{ text: 'High Density Enhanced CAR-RT: ' }, { text: this.addCommas(this.jobPatterns[i].cwalk125) }, { text: 'Basic CAR-RT:' }, { text: this.addCommas(this.jobPatterns[i].ccrt) }],
-            [{ text: 'Saturation Enhanced CAR-RT: ' }, { text: this.addCommas(this.jobPatterns[i].csat) }, { text: 'Pack and Ship/Estimate:' }, { text: this.addCommas(this.jobPatterns[i].PackShip) }],
-            [{ text: ' ' }, { text: ' ' }, { text: 'TOTAL: ', style: 'bold', fontSize: 11 }, { text: this.addCommas(this.getPatQty(this.jobPatterns[i].Jobpat)), style: 'bold', fontSize: 11 }]
-          ]
-        },
-        fontSize: 10
-      }]);
-      body.push([{text: ' '}, { text: 'MAIL-PIECE COMPONENTS:', style: 'bold', fontSize: 11}]);
+      body.push([{ text: ' ' }, { text: ' ' }]);
+      if (this.jobPatterns[i].cdig5bar != 0 ||
+          this.jobPatterns[i].cbasbar != 0 ||
+          this.jobPatterns[i].PackShip != 0 ||
+          this.jobPatterns[i].cbas != 0 ||
+          this.jobPatterns[i].cpre != 0 ||
+          this.jobPatterns[i].ccrt != 0 ||
+          this.jobPatterns[i].cwalk125 != 0 ||
+          this.jobPatterns[i].csat != 0 ||
+          this.jobPatterns[i].cbasbar != 0 ||
+          this.jobPatterns[i].cdig3bar != 0 ||
+          this.jobPatterns[i].cdig5bar != 0 ||
+          this.jobPatterns[i].caadc != 0 ||
+          this.jobPatterns[i].cmaadc != 0 ||
+          this.jobPatterns[i].cbas3dig != 0) {
+          body.push([{ text: ' ' }, { text: 'DOMESTIC POSTAL COUNTS:', style: 'bold', fontSize: 11 }]);
+          body.push([{ text: ' ' }, {
+            table: {
+              widths: ['38%', '12%', '38%', '12%'],
+              body: [
+                [{ text: '5-Digit Auto:' }, { text: this.addCommas(this.jobPatterns[i].cdig5bar) }, { text: 'Machinable 5-Digit:' }, { text: this.addCommas(this.jobPatterns[i].cbasbar) }],
+                [{ text: '3-Digit Auto:' }, { text: this.addCommas(this.jobPatterns[i].cdig3bar) }, { text: 'Machinable 3-digit:' }, { text: this.addCommas(this.jobPatterns[i].cbas3dig) }],
+                [{ text: 'Automated ADC/AADC:' }, { text: this.addCommas(this.jobPatterns[i].caadc) }, { text: 'Machinable ADC/AADC:' }, { text: this.addCommas(this.jobPatterns[i].cpre) }],
+                [{ text: 'Automated MADC/MAADC:' }, { text: this.addCommas(this.jobPatterns[i].cmaadc) }, { text: 'Machinable MADC/MAADC:' }, { text: this.addCommas(this.jobPatterns[i].cbas) }],
+                [{ text: 'High Density Enhanced CAR-RT: ' }, { text: this.addCommas(this.jobPatterns[i].cwalk125) }, { text: 'Basic CAR-RT:' }, { text: this.addCommas(this.jobPatterns[i].ccrt) }],
+                [{ text: 'Saturation Enhanced CAR-RT: ' }, { text: this.addCommas(this.jobPatterns[i].csat) }, { text: 'Pack and Ship/Estimate:' }, { text: this.addCommas(this.jobPatterns[i].PackShip) }],
+              ]
+            },
+            fontSize: 10
+          }]);
+      };
+      if (this.jobPatterns[i].foreign != 0 || this.jobPatterns[i].canadian != 0) {
+        body.push([{ text: ' ' }, { text: 'FOREIGN PIECE COUNTS:', style: 'bold', fontSize: 11 }]);
+        body.push([{ text: ' ' }, {
+          table: {
+            widths: ['40%', '60%'],
+            body: [
+              [{ text: 'Canadian:', style: 'bold' }, { text: this.addCommas(this.jobPatterns[i].canadian) }],
+              [{ text: 'Foreign:', style: 'bold' }, { text: this.addCommas(this.jobPatterns[i].foreign) }]
+            ]
+          },
+          fontSize: 10
+        }]);
+      };
+      body.push([{ text: ' ' }, { text: 'TOTAL PIECES:    ' + this.addCommas(this.getPatQty(this.jobPatterns[i].Jobpat)), alignment: 'right', style: 'bold', fontSize: 12 }]);
+      body.push([{ text: ' ' }, { text: 'MAIL-PIECE COMPONENTS:', style: 'bold', fontSize: 11 }]);
       body.push([{ text: ' ' }, {
         table: {
           headerRows: 0,
           widths: ['10%', '2%', '15%', '8%', '32%', '33%'],
           body: this.buildMailPieceBody(this.jobPatterns[i])
         },
-        layout: 'noBorders',
+        //layout: 'noBorders',
+        layout: 'lightHorizontalLines',
         fontSize: 10
       }]);
       body.push([{ text: ' ' }, { text: ' ' }]);
@@ -360,10 +389,15 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
 
   /**
    * @function buildMailPieceBody
+   * @description dynamically build an array containing the data to be displayed in
+   * the Mail Piece Component table section
+   * @param pat string - Job Pattern Code
    */
   private buildMailPieceBody(pat) {
     var body = [];
-    var ord: number = 1;
+    var ord: number = 1;          /** the insertion order */
+
+    // optional outer envelope
     if (pat.OuterName != null || pat.OuterCode != null || pat.OuterNote != null) {
       body.push([
         { text: 'Outer:', style: 'bold' },
@@ -376,6 +410,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
       ord += 1;
     };
 
+    // optional Postcard
     if (pat.PostName1 != null || pat.PostCode1 != null || pat.PostNote1 != null) {
       body.push([
         { text: 'Postcard:', style: 'bold' },
@@ -388,18 +423,19 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
       ord += 1;
     }
 
-    if (pat.Insert1Name != null || pat.Insert1Code != null || pat.Insert1Note != null){
+    // inserts (currently 25 maximum)
+    if (pat.Insert1Name != null || pat.Insert1Code != null || pat.Insert1Note != null) {
       body.push([
         { text: 'Inserts:', style: 'bold' },
         { text: ord, style: 'bold' },
         { text: pat.Insert1Name },
-        { text: ' ', style: 'bold' },
+        { text: 'Code:', style: 'bold' },
         { text: pat.Insert1Code },
         { text: pat.Insert1Note }
       ]);
       ord += 1;
     }
-    if (pat.Insert2Name != null || pat.Insert2Code != null || pat.Insert2Note != null){
+    if (pat.Insert2Name != null || pat.Insert2Code != null || pat.Insert2Note != null) {
       body.push([
         { text: ' ', style: 'bold' },
         { text: ord, style: 'bold' },
@@ -564,17 +600,116 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
       ]);
       ord += 1;
     }
-
+    if (pat.Insert17Name != null || pat.Insert17Code != null || pat.Insert17Note != null) {
+      body.push([
+        { text: ' ', style: 'bold' },
+        { text: ord, style: 'bold' },
+        { text: pat.Insert17Name },
+        { text: ' ', style: 'bold' },
+        { text: pat.Insert17Code },
+        { text: pat.Insert17Note }
+      ]);
+      ord += 1;
+    }
+    if (pat.Insert18Name != null || pat.Insert18Code != null || pat.Insert18Note != null) {
+      body.push([
+        { text: ' ', style: 'bold' },
+        { text: ord, style: 'bold' },
+        { text: pat.Insert18Name },
+        { text: ' ', style: 'bold' },
+        { text: pat.Insert18Code },
+        { text: pat.Insert18Note }
+      ]);
+      ord += 1;
+    }
+    if (pat.Insert19Name != null || pat.Insert19Code != null || pat.Insert19Note != null) {
+      body.push([
+        { text: ' ', style: 'bold' },
+        { text: ord, style: 'bold' },
+        { text: pat.Insert19Name },
+        { text: ' ', style: 'bold' },
+        { text: pat.Insert19Code },
+        { text: pat.Insert19Note }
+      ]);
+      ord += 1;
+    }
+    if (pat.Insert20Name != null || pat.Insert20Code != null || pat.Insert20Note != null) {
+      body.push([
+        { text: ' ', style: 'bold' },
+        { text: ord, style: 'bold' },
+        { text: pat.Insert20Name },
+        { text: ' ', style: 'bold' },
+        { text: pat.Insert20Code },
+        { text: pat.Insert20Note }
+      ]);
+      ord += 1;
+    }
+    if (pat.Insert21Name != null || pat.Insert21Code != null || pat.Insert21Note != null) {
+      body.push([
+        { text: ' ', style: 'bold' },
+        { text: ord, style: 'bold' },
+        { text: pat.Insert21Name },
+        { text: ' ', style: 'bold' },
+        { text: pat.Insert21Code },
+        { text: pat.Insert21Note }
+      ]);
+      ord += 1;
+    }
+    if (pat.Insert22Name != null || pat.Insert22Code != null || pat.Insert22Note != null) {
+      body.push([
+        { text: ' ', style: 'bold' },
+        { text: ord, style: 'bold' },
+        { text: pat.Insert22Name },
+        { text: ' ', style: 'bold' },
+        { text: pat.Insert22Code },
+        { text: pat.Insert22Note }
+      ]);
+      ord += 1;
+    }
+    if (pat.Insert23Name != null || pat.Insert23Code != null || pat.Insert23Note != null) {
+      body.push([
+        { text: ' ', style: 'bold' },
+        { text: ord, style: 'bold' },
+        { text: pat.Insert23Name },
+        { text: ' ', style: 'bold' },
+        { text: pat.Insert23Code },
+        { text: pat.Insert23Note }
+      ]);
+      ord += 1;
+    }
+    if (pat.Insert24Name != null || pat.Insert24Code != null || pat.Insert24Note != null) {
+      body.push([
+        { text: ' ', style: 'bold' },
+        { text: ord, style: 'bold' },
+        { text: pat.Insert24Name },
+        { text: ' ', style: 'bold' },
+        { text: pat.Insert24Code },
+        { text: pat.Insert24Note }
+      ]);
+      ord += 1;
+    }
+    if (pat.Insert25Name != null || pat.Insert25Code != null || pat.Insert25Note != null) {
+      body.push([
+        { text: ' ', style: 'bold' },
+        { text: ord, style: 'bold' },
+        { text: pat.Insert25Name },
+        { text: ' ', style: 'bold' },
+        { text: pat.Insert25Code },
+        { text: pat.Insert25Note }
+      ]);
+      ord += 1;
+    }
+    // Done.
     return body;
   }
 
   /**
    * @function formatUsPhone
    * @description Reformat phone data into US Phone Number format/style
-   * @param {String} phone - phone number to be reformatted
-   * @returns {String} the reformatted phone number
+   * @param {string} phone - phone number to be reformatted
+   * @returns {string} the reformatted phone number
    */
-  private formatUsPhone(phone) {
+  private formatUsPhone(phone: string) {
     var phoneTest = new RegExp(/^((\+1)|1)? ?\(?(\d{3})\)?[ .-]?(\d{3})[ .-]?(\d{4})( ?(ext\.? ?|x)(\d*))?$/);
     if (phone != null) {
       phone = phone.trim();
@@ -593,10 +728,10 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
   /**
    * @function formatUsZipCode
    * @description reformat zip code data into US Zip Code format/style
-   * @param {String} zip - the Zip Code to be reformatted
-   * @returns {String} the reformatted Zip Code
+   * @param {string} zip - the Zip Code to be reformatted
+   * @returns {string} the reformatted Zip Code
    */
-  private formatUsZipCode(zip) {
+  private formatUsZipCode(zip: string) {
     if (!zip) {
       return zip;
     }
@@ -611,7 +746,8 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
 
   /**
    * @function formatUsDate
-   * @param x
+   * @description use momemtJS to format a date into yy/mm/dd
+   * @param {string} x the Date to be reformatted
    */
   private formatUsDate(x: string) {
     return moment(x).format('l')
@@ -619,9 +755,11 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
 
   /**
    * @function addCommas
-   * @param intNum
+   * @description reformatts a number by adding colums for thousands deliniation
+   * @param {number} intNum the number to add commas too
+   * @returns {string} the formatted number with commas (US Style)
    */
-  private addCommas(intNum) {
+  private addCommas(intNum: number) {
     return (intNum + '').replace(/(\d)(?=(\d{3})+$)/g, '$1,');
   }
 
@@ -630,7 +768,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
    * @description Component memory clean-up
    */
   ngOnDestroy() {
-    /** dispose of subsription to prevent memory leak */
+    /** dispose of any active subsriptions to prevent memory leak */
     this.subscription.unsubscribe();
   }
 }
