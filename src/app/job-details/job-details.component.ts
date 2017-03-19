@@ -75,7 +75,6 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
           this.totalQty += parseInt(this.jobPatterns[i].canadian);
         }
       }));
-
     }));
   }
 
@@ -149,11 +148,11 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
           {
             columns: [
               { text: company + ' - ' + jobNumber +
-                '\nTS: ' + moment().format('MMMM Do YYYY, h:mm:ss a'), alignment: 'left', margin: [40, 8, 30, 3], fontSize: 8 },
+                '\npub: ' + moment().format('MMMM Do YYYY, h:mm:ss a'), alignment: 'left', margin: [40, 8, 30, 3], fontSize: 8 },
               { text: 'JOB TICKET', bold: true, alignment: 'center', margin: [40, 8, 30, 3], fontSize: 18 },
               {
                 text: 'Job Ticket Date: ' + moment(aJob.JobTicketDate).format('l') +
-                '\nPAGE: ' + currentPage + ' OF ' + pageCount, alignment: 'right', margin: [30, 8, 30, 3], fontSize: 8, bold: true
+                '\nPAGE: ' + currentPage + ' OF ' + pageCount, alignment: 'right', margin: [40, 8, 30, 3], fontSize: 8, bold: true
               }
             ]
           }
@@ -172,7 +171,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
               lineWidth: 0.5
             }]
         },
-          {
+        {
           columns: [
             {
               width: '60%',
@@ -226,7 +225,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
           },
           layout: 'noBorders'
         },
-        { text: 'DEPARTMENTAL INSTRUCTIONS: ', style: 'bold', fontSize: 14 },
+        { text: '\nDEPARTMENTAL INSTRUCTIONS: ', style: 'bold', fontSize: 14 },
         { text: ' ' },
         {
           table: {
@@ -243,9 +242,9 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
             columns: [
               {
                 text: 'JT-Viewer - Version 0.0.0' +
-                '\nTS: ' + moment().format('MMMM Do YYYY, h:mm:ss a'), alignment: 'left', margin: [40, 8, 30, 3], fontSize: 8
+                '\npub: ' + moment().format('MMMM Do YYYY, h:mm:ss a'), alignment: 'left', margin: [40, 8, 30, 3], fontSize: 8
               },
-              { text: '2017 Executive Mailing Service', alignment: 'center', margin: [40, 8, 30, 3], fontSize: 8 },
+              { text: '2017 - Executive Mailing Service', alignment: 'center', margin: [40, 8, 30, 3], fontSize: 8 },
               { text: 'PAGE: ' + currentPage + ' OF ' + pageCount, alignment: 'right', margin: [40, 8, 30, 3], fontSize: 8, bold: true }
             ]
           },
@@ -291,7 +290,7 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
     if (this.aJob.Sample20 != null) { body.push([{ text: ' ' }, this.aJob.Sample20]); };
     if (this.aJob.Sample21 != null) { body.push([{ text: ' ' }, this.aJob.Sample21]); };
     if (this.aJob.Sample22 != null) { body.push([{ text: ' ' }, this.aJob.Sample22]); };
-    body.push([{ text: 'TOTAL PIECES:', style: 'bold', fontSize: 12 }, { text: this.addCommas(this.totalQty), style: 'bold', fontSize: 12 }]);
+    body.push([{ text: 'TOTAL JOB PIECES:', style: 'bold', fontSize: 12 }, { text: this.addCommas(this.totalQty), style: 'bold', fontSize: 12 }]);
     //
     return body;
   }
@@ -330,12 +329,30 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
             table: {
               widths: ['38%', '12%', '38%', '12%'],
               body: [
-                [{ text: '5-Digit Auto:' }, { text: this.addCommas(this.jobPatterns[i].cdig5bar) }, { text: 'Machinable 5-Digit:' }, { text: this.addCommas(this.jobPatterns[i].cbasbar) }],
-                [{ text: '3-Digit Auto:' }, { text: this.addCommas(this.jobPatterns[i].cdig3bar) }, { text: 'Machinable 3-digit:' }, { text: this.addCommas(this.jobPatterns[i].cbas3dig) }],
-                [{ text: 'Automated ADC/AADC:' }, { text: this.addCommas(this.jobPatterns[i].caadc) }, { text: 'Machinable ADC/AADC:' }, { text: this.addCommas(this.jobPatterns[i].cpre) }],
-                [{ text: 'Automated MADC/MAADC:' }, { text: this.addCommas(this.jobPatterns[i].cmaadc) }, { text: 'Machinable MADC/MAADC:' }, { text: this.addCommas(this.jobPatterns[i].cbas) }],
-                [{ text: 'High Density Enhanced CAR-RT: ' }, { text: this.addCommas(this.jobPatterns[i].cwalk125) }, { text: 'Basic CAR-RT:' }, { text: this.addCommas(this.jobPatterns[i].ccrt) }],
-                [{ text: 'Saturation Enhanced CAR-RT: ' }, { text: this.addCommas(this.jobPatterns[i].csat) }, { text: 'Pack and Ship/Estimate:' }, { text: this.addCommas(this.jobPatterns[i].PackShip) }],
+                [
+                  { text: '5-Digit Auto:', bold: (this.jobPatterns[i].cdig5bar > 0) ? true : false }, { text: this.addCommas(this.jobPatterns[i].cdig5bar), bold: (this.jobPatterns[i].cdig5bar > 0) ? true : false },
+                  { text: 'Machinable 5-Digit:', bold: (this.jobPatterns[i].cbasbar > 0) ? true : false }, { text: this.addCommas(this.jobPatterns[i].cbasbar), bold: (this.jobPatterns[i].cbasbar > 0) ? true : false }
+                ],
+                [
+                  { text: '3-Digit Auto:', bold: (this.jobPatterns[i].cdig3bar > 0) ? true : false }, { text: this.addCommas(this.jobPatterns[i].cdig3bar), bold: (this.jobPatterns[i].cdig3bar > 0) ? true : false },
+                  { text: 'Machinable 3-digit:', bold: (this.jobPatterns[i].cbas3dig > 0) ? true : false }, { text: this.addCommas(this.jobPatterns[i].cbas3dig), bold: (this.jobPatterns[i].cbas3dig > 0) ? true : false }
+                ],
+                [
+                  { text: 'Automated ADC/AADC:', bold: (this.jobPatterns[i].caadc > 0) ? true : false }, { text: this.addCommas(this.jobPatterns[i].caadc), bold: (this.jobPatterns[i].caadc > 0) ? true : false },
+                  { text: 'Machinable ADC/AADC:', bold: (this.jobPatterns[i].cpre > 0) ? true : false }, { text: this.addCommas(this.jobPatterns[i].cpre), bold: (this.jobPatterns[i].cpre > 0) ? true : false }
+                ],
+                [
+                  { text: 'Automated MADC/MAADC:', bold: (this.jobPatterns[i].cmaadc > 0) ? true : false }, { text: this.addCommas(this.jobPatterns[i].cmaadc), bold: (this.jobPatterns[i].cmaadc > 0) ? true : false },
+                  { text: 'Machinable MADC/MAADC:', bold: (this.jobPatterns[i].cbas > 0) ? true : false }, { text: this.addCommas(this.jobPatterns[i].cbas), bold: (this.jobPatterns[i].cbas > 0) ? true : false }
+                ],
+                [
+                  { text: 'High Density Enhanced CAR-RT: ', bold: (this.jobPatterns[i].cwalk125 > 0) ? true : false }, { text: this.addCommas(this.jobPatterns[i].cwalk125), bold: (this.jobPatterns[i].cwalk125 > 0) ? true : false },
+                  { text: 'Basic CAR-RT:', bold: (this.jobPatterns[i].ccrt > 0) ? true : false }, { text: this.addCommas(this.jobPatterns[i].ccrt), bold: (this.jobPatterns[i].ccrt) ? true : false }
+                ],
+                [
+                  { text: 'Saturation Enhanced CAR-RT: ', bold: (this.jobPatterns[i].csat > 0) ? true : false }, { text: this.addCommas(this.jobPatterns[i].csat), bold: (this.jobPatterns[i].csat > 0) ? true : false },
+                  { text: 'Pack and Ship/Estimate:', bold: (this.jobPatterns[i].PackShip > 0) ? true : false }, { text: this.addCommas(this.jobPatterns[i].PackShip), bold: (this.jobPatterns[i].PackShip > 0) ? true : false }
+                ],
               ]
             },
             fontSize: 10
@@ -347,14 +364,20 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
           table: {
             widths: ['40%', '60%'],
             body: [
-              [{ text: 'Canadian:', style: 'bold' }, { text: this.addCommas(this.jobPatterns[i].canadian) }],
-              [{ text: 'Foreign:', style: 'bold' }, { text: this.addCommas(this.jobPatterns[i].foreign) }]
+              [
+                { text: 'Canadian:', bold: (this.jobPatterns[i].canadian > 0) ? true : false },
+                { text: this.addCommas(this.jobPatterns[i].canadian), bold: (this.jobPatterns[i].canadian > 0) ? true : false }
+              ],
+              [
+                { text: 'Other Foreign:', bold: (this.jobPatterns[i].foreign > 0) ? true : false },
+                { text: this.addCommas(this.jobPatterns[i].foreign), bold: (this.jobPatterns[i].foreign > 0) ? true : false }
+              ]
             ]
           },
           fontSize: 10
         }]);
       };
-      body.push([{ text: ' ' }, { text: 'TOTAL PIECES:    ' + this.addCommas(this.getPatQty(this.jobPatterns[i].Jobpat)), alignment: 'right', style: 'bold', fontSize: 12 }]);
+      body.push([{ text: ' ' }, { text: 'TOTAL PATTERN PIECES:    ' + this.addCommas(this.getPatQty(this.jobPatterns[i].Jobpat)), alignment: 'right', style: 'bold', fontSize: 12 }]);
       body.push([{ text: ' ' }, { text: 'MAIL-PIECE COMPONENTS:', style: 'bold', fontSize: 11 }]);
       body.push([{ text: ' ' }, {
         table: {
@@ -367,6 +390,19 @@ export class JobDetailsComponent implements OnInit, OnDestroy {
         fontSize: 10
       }]);
       body.push([{ text: ' ' }, { text: ' ' }]);
+      body.push([
+        {
+          canvas: [
+            {
+              type: 'line',
+              x1: 0,
+              y1: 5,
+              x2: 543,
+              y2: 5,
+              lineWidth: 0.5
+            }], colSpan: 2
+        }
+      ]);
     }
     return body;
   }
