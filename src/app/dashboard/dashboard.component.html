@@ -1,23 +1,29 @@
 <div class="container">
   <h1>DASHBOARD</h1>
-  <hr>
-  <h2 class="text-muted">Stats</h2>
-  <chart [type]="type" [data]="data" [options]="options"></chart>
-  <hr>
-  <h2 class="text-muted">Today's Jobs</h2>
-  <table class="table table-condensed jt-width">
-  <tr>
-    <th>Job Number</th>
-    <th>Drop Date Start</th>
-    <th>Drop Date End</th>
-    <th>QTY</th>
-  </tr>
-  <tr>
-    <td>9999-99</td>
-    <td>99/99/9999</td>
-    <td>99/99/9999</td>
-    <td>9,999,999</td>
-  </tr>
-</table>
 </div>
-
+<!--<hr>
+    <h2 class="text-muted">Stats</h2>
+    <chart [type]="type" [data]="data" [options]="options"></chart>-->
+<div [ngSwitch]="loading" class="container">
+  <div *ngSwitchCase="false" class="container">
+    <h2 class="text-muted">Today's Jobs</h2>
+    <hr>
+    <table class="table table-condensed jt-width">
+      <tr>
+        <th>Job Number</th>
+        <th>Description</th>
+        <th>Drop Date</th>
+        <th>QTY</th>
+      </tr>
+      <tr *ngFor="let job of todaysJobs">
+        <td><a [routerLink]="['/job-details', job.Jobnum]">{{job.Jobnum}}</a></td>
+        <td>{{job.JobDescp}}</td>
+        <td>{{job.DropDate | date: 'MM/dd/yyyy'}}</td>
+        <td>{{job.PieceCount | addCommas}}</td>
+      </tr>
+    </table>
+  </div>
+  <div *ngSwitchCase="true" class="container">
+    <loading-indicator style="margin-left: 34%; margin-top: 5%">Loading Data...</loading-indicator>
+  </div>
+</div>
